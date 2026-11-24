@@ -286,6 +286,7 @@
     function hideTip() { tip.hidden = true; }
     let hovered = null;
     function hoverAt(e) {
+      if (selected) return;
       const t = e.target;
       const d = t.__sub;
       if (hovered && hovered !== d) hovered.el.classList.remove('hl');
