@@ -595,9 +595,22 @@
   if (line) {
     const fill = document.createElement('div'); fill.className = 'line-fill';
     const train = document.createElement('div'); train.className = 'train'; train.setAttribute('aria-hidden', 'true');
+    // simple top-down bus facing down the line; front window holds the face photo
+    train.innerHTML = `<svg viewBox="0 0 24 44" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="bus-face-clip"><circle cx="12" cy="35" r="6"/></clipPath></defs>
+      <rect class="bus-body" x="1.25" y="1.25" width="21.5" height="41.5" rx="6"/>
+      <rect class="bus-glass" x="6" y="4" width="12" height="2.5" rx="1.2" opacity=".55"/>
+      <rect class="bus-glass" x="5" y="9" width="14" height="17" rx="2" opacity=".18"/>
+      <circle class="bus-glass" cx="12" cy="35" r="6.5"/>
+      <image class="bus-face" x="5.5" y="28.5" width="13" height="13" preserveAspectRatio="xMidYMid slice" clip-path="url(#bus-face-clip)"/>
+    </svg>`;
+    const face = new Image(); // only show the photo once it exists in the images folder
+    face.onload = () => train.querySelector('.bus-face').setAttribute('href', face.src);
+    face.src = 'images/subhitcha-face.webp';
     line.append(fill, train);
     const stops = [...line.querySelectorAll('.stop')];
     const transfer = line.querySelector('.stop.transfer');
+    let lastReached = -1;
     function update() {
       const r = line.getBoundingClientRect();
       const h = line.offsetHeight - 20;
@@ -608,8 +621,11 @@
       const y = prog * h;
       fill.style.height = y + 'px';
       train.style.top = (y) + 'px';
-      train.style.background = y > split ? 'var(--route)' : 'var(--ink)';
-      stops.forEach(s => s.classList.toggle('reached', s.offsetTop + 8 <= y + 10));
+      train.style.color = y > split ? 'var(--route)' : 'var(--ink)';
+      let reached = 0;
+      stops.forEach(s => { const on = s.offsetTop + 8 <= y + 10; s.classList.toggle('reached', on); if (on) reached++; });
+      if (reached > lastReached && lastReached >= 0) { train.classList.remove('bounce'); void train.offsetWidth; train.classList.add('bounce'); } // tiny bounce on arriving at a stop
+      lastReached = reached;
     }
     let raf = 0;
     addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); }, { passive: true });

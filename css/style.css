@@ -271,8 +271,12 @@ input[type="radio"], input[type="checkbox"] { accent-color: var(--c-under); widt
 .line { list-style: none; margin: 0; padding: 0; position: relative; --x: 22px; }
 .line::before { content: ""; position: absolute; left: calc(var(--x) - 3px); top: 10px; bottom: 10px; width: 6px; border-radius: 3px; background: linear-gradient(to bottom, var(--c-under) 0 var(--split, 70%), var(--route) var(--split, 70%)); opacity: .25; }
 .line-fill { position: absolute; left: calc(var(--x) - 3px); top: 10px; width: 6px; border-radius: 3px; height: 0; background: linear-gradient(to bottom, var(--c-under) 0, var(--c-under) var(--split-px, 9999px), var(--route) var(--split-px, 9999px)); }
-.train { position: absolute; left: calc(var(--x) - 11px); top: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--ink); display: grid; place-items: center; box-shadow: 0 0 0 3px var(--paper); z-index: 2; transition: top .08s linear; }
-.train::after { content: ""; width: 10px; height: 6px; border-radius: 2px; background: var(--paper); }
+.train { position: absolute; left: calc(var(--x) - 12px); top: 0; width: 24px; height: 44px; margin-top: -11px; color: var(--ink); z-index: 2; transition: top .08s linear; } /* top-down bus, centred where the old 22px train was */
+.train svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.train .bus-body { fill: currentColor; stroke: var(--paper); stroke-width: 2.5; transition: fill .3s; }
+.train .bus-glass { fill: var(--paper); }
+.train.bounce svg { animation: bus-bounce .32s ease-out; }
+@keyframes bus-bounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(3px); } 70% { transform: translateY(-1px); } }
 .stop { position: relative; padding: 0 0 46px calc(var(--x) + 34px); }
 .stop::before { content: ""; position: absolute; left: calc(var(--x) - 9px); top: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--paper); border: 4px solid var(--ink); z-index: 1; transition: transform .3s, border-color .3s; }
 .stop.reached::before { border-color: var(--accent); transform: scale(1.15); }
