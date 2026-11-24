@@ -7,7 +7,7 @@
   const fmt = n => n == null ? '–' : Number(n).toLocaleString('en-AU');
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  /* ---------- Theme: Day / Night ---------- */
+  /* ---------- Theme: Street / Satellite ---------- */
   const themeBtns = document.querySelectorAll('[data-theme-set]');
   function applyTheme(t, save) {
     root.dataset.theme = t;
@@ -46,11 +46,12 @@
 
   Promise.all([
     getJSON('data/brisbane_deficit.geojson'),
-    getJSON('data/bus_routes.geojson').catch(() => null)
-  ]).then(([sa2, routes]) => initMap(sa2, routes))
+    getJSON('data/bus_routes.geojson').catch(() => null),
+    getJSON('data/busiest_stops.geojson').catch(() => null)
+  ]).then(([sa2, routes, stops]) => initMap(sa2, routes, stops))
     .catch(err => { console.warn('Map data not loaded:', err); });
 
-  function initMap(sa2, routes) {
+  function initMap(sa2, routes, stops) {
     // bounds and projection
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
     const eachCoord = (geom, fn) => geom.coordinates.forEach(poly => poly.forEach(ring => ring.forEach(fn)));
@@ -71,8 +72,10 @@
     const world = document.createElementNS(SVGNS, 'g');
     const gSub = document.createElementNS(SVGNS, 'g');
     const gRoutes = document.createElementNS(SVGNS, 'g');
+    const gStops = document.createElementNS(SVGNS, 'g');
     gRoutes.setAttribute('class', 'routes');
-    world.append(gSub, gRoutes);
+    gStops.setAttribute('class', 'stops');
+    world.append(gSub, gRoutes, gStops);
     svg.append(world);
 
     const subs = sa2.features.map(f => {
@@ -97,6 +100,16 @@
       });
       gRoutes.append(frag);
     }
+    const stopEls = [];
+    if (stops) {
+      stops.features.forEach(f => {
+        const c = document.createElementNS(SVGNS, 'circle');
+        const [x, y] = P(...f.geometry.coordinates);
+        c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1));
+        c.__stop = f.properties;
+        gStops.append(c); stopEls.push(c);
+      });
+    }
 
     holder.append(svg);
     fig.classList.add('ready');
@@ -117,6 +130,8 @@
     }
     function apply() {
       world.setAttribute('transform', `translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${s.toFixed(5)})`);
+      const r = (5 / s).toFixed(3);
+      stopEls.forEach(c => c.setAttribute('r', r));
       updateScale();
       svg.style.touchAction = (s > base * 1.05) ? 'none' : 'pan-y';
     }
@@ -156,15 +171,12 @@
 
     function updateScale() {
       const mPerPx = (111320 / K) / s;
-      const target = 120 * mPerPx;
-      const nice = [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000];
+      const target = 90 * mPerPx;
+      const nice = [250, 500, 1000, 2000, 5000, 10000, 20000, 50000];
       let len = nice[0];
       for (const n of nice) if (n <= target) len = n;
-      const px = Math.round(len / mPerPx);
-      const lab = v => v >= 1000 ? (v / 1000) + ' km' : v + ' m';
-      const num = v => len >= 1000 ? String(v / 1000) : String(v);
-      scaleEl.innerHTML = `<span class="sb" style="width:${px}px"><i></i><i></i></span>` +
-        `<span class="sl" style="width:${px}px"><b style="left:0">0</b><b style="left:50%">${num(len / 2)}</b><b style="left:100%">${lab(len)}</b></span>`;
+      scaleEl.querySelector('.bar').style.width = (len / mPerPx).toFixed(0) + 'px';
+      scaleEl.querySelector('.lbl').textContent = len >= 1000 ? (len / 1000) + ' km' : len + ' m';
     }
 
     /* --- interaction: pan, zoom --- */
@@ -204,7 +216,7 @@
     const endPtr = e => { pointers.delete(e.pointerId); if (!pointers.size) { drag = null; svg.classList.remove('dragging'); } };
     svg.addEventListener('pointerup', endPtr);
     svg.addEventListener('pointercancel', endPtr);
-    svg.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') hideTip(); });
+    svg.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse' && !selected) hideTip(); });
 
     let wheelHintT;
     svg.addEventListener('wheel', e => {
@@ -241,22 +253,24 @@
         subs.forEach(d => { const c = d.props.category || 'No data'; counts[c] = (counts[c] || 0) + 1; d.el.style.fill = `var(${CAT[c] || '--c-none'})`; });
         legendEl.innerHTML = ['Under-served', 'Balanced', 'Well-served', 'No data'].filter(c => counts[c]).map(c =>
           `<div class="legend-row"><i style="background:var(${CAT[c]})"></i>${c}<span class="n">${counts[c]}</span></div>`).join('') +
-          `<p class="legend-note">Deficit = demand (density) − supply (departures). Balanced: score rounds to 0.</p>`;
+          `<p class="legend-note">Deficit = density-based demand minus departures-based supply, from my QGIS analysis. "Balanced" means a score that rounds to zero.</p>`;
       } else {
         const br = quantiles(layer);
         const cls = v => v == null ? -1 : br.findIndex(b => v <= b) === -1 ? 4 : br.findIndex(b => v <= b);
         const counts = [0, 0, 0, 0, 0]; let nd = 0;
         subs.forEach(d => { const c = cls(d.props[layer]); if (c < 0) { nd++; d.el.style.fill = 'var(--c-none)'; } else { counts[c]++; d.el.style.fill = `var(--r${c + 1})`; } });
         const lo = [subs.reduce((m, d) => d.props[layer] != null ? Math.min(m, d.props[layer]) : m, Infinity), ...br];
-  
+        const unit = layer === 'density' ? 'People per km²' : 'Departures per 1,000 residents';
         legendEl.innerHTML = counts.map((n, i) => {
           const a = Math.round(lo[i]), b = i < 4 ? Math.round(br[i]) : null;
           return `<div class="legend-row"><i style="background:var(--r${i + 1})"></i>${b == null ? fmt(a) + '+' : fmt(a) + ' – ' + fmt(b)}<span class="n">${n}</span></div>`;
         }).join('') + (nd ? `<div class="legend-row"><i style="background:var(--c-none)"></i>No data<span class="n">${nd}</span></div>` : '') +
-          `<p class="legend-note">${layer === 'density' ? 'People per km², five equal-count classes.' : 'Five equal-count classes, full GTFS timetable.'}</p>`;
+          `<p class="legend-note">${unit}, in five equal-count classes.${layer === 'departures_per_1000' ? ' Departures are counted across the whole GTFS timetable.' : ''}</p>`;
       }
     }
     panel.querySelectorAll('input[name="layer"]').forEach(r => r.addEventListener('change', () => { layer = r.value; shade(); }));
+    document.getElementById('t-routes').addEventListener('change', e => { gRoutes.style.display = e.target.checked ? '' : 'none'; });
+    document.getElementById('t-stops').addEventListener('change', e => { gStops.style.display = e.target.checked ? '' : 'none'; });
     shade();
 
     /* --- tooltip / selection --- */
@@ -288,6 +302,10 @@
     function hoverAt(e) {
       if (selected) return;
       const t = e.target;
+      if (t.__stop) {
+        tip.innerHTML = `<b>${esc(t.__stop.name)}</b><div class="tip-grid"><span>Departures</span><span>${fmt(t.__stop.departures)}</span></div><span class="legend-note" style="color:inherit;opacity:.7">One of the 20 busiest stops</span>`;
+        tip.hidden = false; const p = pt(e); placeTip(p[0], p[1]); return;
+      }
       const d = t.__sub;
       if (hovered && hovered !== d) hovered.el.classList.remove('hl');
       if (!d) { hovered = null; hideTip(); return; }
@@ -303,14 +321,11 @@
     }
     svg.addEventListener('click', e => {
       if (moved) { moved = false; return; }
-      // pointer capture retargets the click to the svg, so look up what is under the cursor
-      const under = document.elementFromPoint(e.clientX, e.clientY);
-      const d = under && under.__sub;
+      const d = e.target.__sub;
       if (!d || d === selected) { clearSel(); if (hovered && e.pointerType === 'mouse') hoverAt(e); return; }
-      zoomTo(d);
+      const p = pt(e); select(d, p[0], p[1]);
     });
-    svg.addEventListener('mouseleave', () => { if (hovered) hovered.el.classList.remove('hl'); hovered = null; hideTip(); });
-    fig.addEventListener('mouseleave', () => { hideTip(); });
+    svg.addEventListener('mouseleave', () => { if (hovered) hovered.el.classList.remove('hl'); hovered = null; });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') clearSel(); });
 
     /* --- search --- */
@@ -320,24 +335,15 @@
     function goTo(name) {
       const d = subs.find(x => x.props.name.toLowerCase() === name.trim().toLowerCase());
       if (!d) return false;
-      zoomTo(d); search.blur();
-      return true;
-    }
-    function zoomTo(d) {
-      if (document.activeElement !== search) search.value = d.props.name;
       const f = fit(d.box, .5);
       const ns = Math.min(f.s, base * 5);
       const [x0, y0, x1, y1] = d.box;
       const aw = (!isNarrow() && W > 700) ? W - 320 : W;
       const ntx = aw / 2 - ns * (x0 + x1) / 2, nty = (H - (isNarrow() ? 0 : 70)) / 2 - ns * (y0 + y1) / 2;
       animateTo(ns, ntx, nty);
-      clearSel();
       setTimeout(() => select(d), reduceMotion ? 0 : 680);
+      return true;
     }
-    // pick another suburb without backspacing: clear on focus so the full list shows
-    search.addEventListener('focus', () => { if (search.value) { search.placeholder = search.value; search.value = ''; } });
-    search.addEventListener('blur', () => { if (!search.value && selected) search.value = selected.props.name; });
-    search.addEventListener('input', () => goTo(search.value));
     search.addEventListener('change', () => goTo(search.value));
     search.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); goTo(search.value); } });
   }
@@ -347,7 +353,7 @@
      ========================================================= */
   const canvas = document.getElementById('globe');
   const projects = [...document.querySelectorAll('.project')];
-  const modeBox = document.getElementById('globe-mode');
+  const pinBox = document.getElementById('globe-pins');
   const gLabel = document.getElementById('globe-label');
   if (canvas && canvas.getContext) {
     const ctx = canvas.getContext('2d');
@@ -355,9 +361,7 @@
     const short = { 'p-paper': 'Rajasthan', 'p-bus': 'Brisbane', 'p-fake': 'UQ', 'p-fall': 'Chennai', 'p-moon': 'Moon' };
     const pins = projects.map(el => ({
       id: el.id, el, lat: +el.dataset.lat, lon: +el.dataset.lon, moon: !!el.dataset.moon,
-      place: el.dataset.place, loc: el.querySelector('.p-loc').textContent, name: short[el.id] || el.id,
-      // UQ sits 3 km from Brisbane CBD: draw it nudged down-left with a leader line so both pins are visible
-      dx: el.id === 'p-fake' ? -20 : 0, dy: el.id === 'p-fake' ? 18 : 0, left: el.id === 'p-fake'
+      place: el.dataset.place, loc: el.querySelector('.p-loc').textContent, name: short[el.id] || el.id
     }));
     let lam = 120, phi = 5;       // view centre (lon, lat)
     let target = null, moonMix = 0, moonSpin = 0, active = null, inView = true, dragging = null;
@@ -447,17 +451,15 @@
       ctx.save(); ctx.globalAlpha = alpha;
       ctx.font = `500 ${Math.max(10, size * 0.026)}px "JetBrains Mono", monospace`; ctx.textBaseline = 'middle';
       pins.filter(p => !p.moon).forEach(p => {
-        const [tx0, ty0, c] = proj(p.lat, p.lon); p.vis = c > 0.05;
-        const x = tx0 + p.dx, y = ty0 + p.dy; p.sx = x; p.sy = y;
+        const [x, y, c] = proj(p.lat, p.lon); p.sx = x; p.sy = y; p.vis = c > 0.05;
         if (!p.vis) return;
         const on = active === p;
-        if (p.dx || p.dy) { ctx.strokeStyle = colors.ink; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(tx0, ty0); ctx.lineTo(x, y); ctx.stroke(); ctx.fillStyle = colors.ink; ctx.beginPath(); ctx.arc(tx0, ty0, 1.8, 0, Math.PI * 2); ctx.fill(); }
         if (on && !reduceMotion) { const pr = (t / 1400) % 1; ctx.strokeStyle = colors.accent; ctx.globalAlpha = alpha * (1 - pr); ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 6 + pr * 18, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = alpha; }
         ctx.fillStyle = on ? colors.accent : colors.paper; ctx.strokeStyle = colors.ink; ctx.lineWidth = 2;
         ctx.beginPath(); ctx.arc(x, y, on ? 7 : 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        {
+        if (on || p.id !== 'p-fake') {
           const label = p.name; const w = ctx.measureText(label).width;
-          const lx = p.left ? x - 12 - w : x + 12, ly = y - (p.id === 'p-bus' ? 12 : 0);
+          const lx = x + 12, ly = y - (p.id === 'p-bus' ? 12 : 0);
           ctx.fillStyle = colors.paper; ctx.globalAlpha = alpha * .85; ctx.fillRect(lx - 4, ly - 9, w + 8, 18);
           ctx.globalAlpha = alpha; ctx.fillStyle = on ? colors.ink : colors.ink2; ctx.fillText(label, lx, ly);
         }
@@ -525,13 +527,14 @@
       if (active === p) return;
       active = p;
       projects.forEach(el => el.classList.toggle('active', el === p.el));
-      modeBox.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.mode === 'moon') === p.moon)));
-      gLabel.innerHTML = p.moon ? '' : `<b>${esc(p.place)}</b> · ${esc(p.loc.split('·')[0].trim())}`;
+      pinBox.querySelectorAll('button').forEach(b => b.setAttribute('aria-current', String(b.dataset.id === p.id)));
+      gLabel.innerHTML = `<b>${esc(p.place)}</b> · ${esc(p.loc.split('·')[0].trim())}`;
       if (!p.moon) target = { lon: p.lon, lat: Math.max(-35, Math.min(35, p.lat)) };
     }
-    modeBox.addEventListener('click', e => {
+    pinBox.innerHTML = pins.map(p => `<button type="button" data-id="${p.id}">${esc(p.name)}</button>`).join('');
+    pinBox.addEventListener('click', e => {
       const b = e.target.closest('button'); if (!b) return;
-      const p = b.dataset.mode === 'moon' ? pins.find(x => x.moon) : (active && !active.moon ? active : pins[0]);
+      const p = pins.find(x => x.id === b.dataset.id);
       setActive(p);
       p.el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
     });

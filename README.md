@@ -7,9 +7,9 @@ Live site: https://zwubhi.github.io
 ## What's here
 
 - `index.html`: all page content
-- `css/style-v2.css`: styles, including Day (light) and Night (dark) themes
-- `js/main-v2.js`: the interactive parts, in plain JavaScript with no libraries
-  - Brisbane bus service map drawn from GeoJSON (pan, zoom, click or search to zoom to a suburb, three shading layers)
+- `css/style.css`: styles, including light ("Street") and dark ("Satellite") themes
+- `js/main.js`: the interactive parts, in plain JavaScript with no libraries
+  - Brisbane bus service map drawn from GeoJSON (pan, zoom, search, three shading layers)
   - projects globe with a Moon mode
   - experience transit line that follows scrolling
   - skills shown as toggleable map layers
