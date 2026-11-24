@@ -74,8 +74,8 @@
   const tip = document.getElementById('map-tip');
   const panel = document.getElementById('map-panel');
   const zoomBox = document.getElementById('map-zoom');
-  const coordsEl = document.getElementById('map-coords');
   const legendEl = document.getElementById('map-legend');
+  const scaleEl = document.getElementById('map-scale');
   const SVGNS = 'http://www.w3.org/2000/svg';
   const K = 1000; // projected units per degree of latitude
 
@@ -170,6 +170,7 @@
       world.setAttribute('transform', `translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${s.toFixed(5)})`);
       const r = (5 / s).toFixed(3);
       stopEls.forEach(c => c.setAttribute('r', r));
+      updateScale();
       svg.style.touchAction = (s > base * 1.05) ? 'none' : 'pan-y';
     }
     function resize(keep) {
@@ -206,6 +207,32 @@
       if (smooth) animateTo(ns, ntx, nty); else { s = ns; tx = ntx; ty = nty; apply(); }
     }
 
+    function geoDist(lo1, la1, lo2, la2) { // great-circle distance in metres
+      const R = 6371008.8, r = Math.PI / 180, dLa = (la2 - la1) * r, dLo = (lo2 - lo1) * r;
+      const h = Math.sin(dLa / 2) ** 2 + Math.cos(la1 * r) * Math.cos(la2 * r) * Math.sin(dLo / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(h));
+    }
+    function updateScale() {
+      // metres per screen pixel, measured from the map's own projection at the current zoom,
+      // including any CSS/SVG scaling between map units and real screen pixels
+      const ctm = world.getScreenCTM();
+      if (!ctm || !W) return;
+      const pxPerUnit = Math.hypot(ctm.a, ctm.b);
+      const cx = (W / 2 - tx) / s, cy = (H / 2 - ty) / s, half = 50 / pxPerUnit;
+      const [lo1, la1] = inv(cx - half, cy), [lo2, la2] = inv(cx + half, cy);
+      const mPerPx = geoDist(lo1, la1, lo2, la2) / 100;
+      // round length whose bar is 60-120 px: steps of 1, 2, 4, 5 x 10^n are never more than 2x apart
+      let len = 1000;
+      outer: for (let e = 1; e <= 6; e++) for (const m of [1, 2, 4, 5]) { const L = m * 10 ** e; if (L / mPerPx >= 60) { len = L; break outer; } }
+      const px = len / mPerPx;
+      scaleEl.querySelector('.bar').style.width = px.toFixed(1) + 'px';
+      scaleEl.querySelector('.ticks').style.width = px.toFixed(1) + 'px';
+      const km = len >= 1000, v = km ? len / 1000 : len;
+      scaleEl.querySelector('.t1').textContent = String(v / 2);
+      scaleEl.querySelector('.t2').textContent = String(v);
+      scaleEl.querySelector('.unit').textContent = km ? 'km' : 'm';
+    }
+
     /* --- interaction: pan, zoom --- */
     const pt = e => { const r = svg.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
     let drag = null, moved = false;
@@ -218,8 +245,6 @@
     });
     svg.addEventListener('pointermove', e => {
       const p = pt(e);
-      const [lon, lat] = inv((p[0] - tx) / s, (p[1] - ty) / s);
-      coordsEl.textContent = `${Math.abs(lat).toFixed(4)}°${lat < 0 ? 'S' : 'N'} ${lon.toFixed(4)}°E`;
       if (pointers.has(e.pointerId)) {
         const prev = pointers.get(e.pointerId);
         pointers.set(e.pointerId, p);
