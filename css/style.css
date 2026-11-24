@@ -306,18 +306,26 @@ input[type="radio"], input[type="checkbox"] { accent-color: var(--c-under); widt
 .layer input:checked ~ .sw { opacity: 1; }
 .layer b { display: block; font-weight: 600; font-size: 16px; }
 .layer small { display: block; color: var(--ink-2); font-size: 13.5px; line-height: 1.5; margin-top: 2px; }
-.features { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 12px; }
-.features a {
-  display: grid; gap: 6px; height: 100%; padding: 16px 16px 14px; text-decoration: none;
-  background: var(--card); border: 1px solid var(--line); border-radius: 12px; font-weight: 500;
-  transition: opacity .3s, border-color .3s, transform .3s;
+.features { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); grid-auto-rows: 1fr; gap: 12px; } /* 1fr rows: every card as tall as the longest lesson */
+.flip { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; font: inherit; color: inherit; text-align: left; cursor: pointer; perspective: 900px; border-radius: 12px; transition: opacity .3s; }
+.flip-inner { display: grid; height: 100%; transform-style: preserve-3d; transition: transform .5s; }
+.flip[aria-pressed="true"] .flip-inner { transform: rotateY(180deg); }
+.features .face {
+  grid-area: 1 / 1; display: grid; gap: 6px; height: 100%; padding: 16px 16px 14px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  transition: border-color .3s;
 }
-.features a:hover { color: var(--ink); border-color: var(--line-strong); }
+.features .front { position: relative; grid-template-rows: auto 1fr; font-weight: 500; padding-right: 36px; }
+.features .back { transform: rotateY(180deg); font-size: 13.5px; line-height: 1.5; color: var(--ink-2); align-content: center; }
+.flip-ico { position: absolute; top: 15px; right: 14px; width: 15px; height: 15px; color: var(--ink-2); opacity: .75; }
+.flip:hover .face { color: var(--ink); border-color: var(--line-strong); }
+.flip:hover .back { color: var(--ink-2); }
 .features .ft { color: var(--ink-2); font-weight: 400; font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; }
 .features .dots { display: flex; gap: 5px; min-height: 10px; align-self: end; }
 .features .dots i { width: 10px; height: 10px; border-radius: 50%; }
-.features li.off a { opacity: .32; }
-.features li.on a { border-color: var(--line-strong); }
+.features li.off .flip { opacity: .32; }
+.features li.on .face { border-color: var(--line-strong); }
 
 /* EDUCATION */
 .edu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
@@ -384,4 +392,8 @@ input[type="radio"], input[type="checkbox"] { accent-color: var(--c-under); widt
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
   .js .reveal { opacity: 1; transform: none; }
+  .flip[aria-pressed="true"] .flip-inner, .features .back { transform: none !important; }
+  .features .face { transition: opacity .3s !important; }
+  .features .back, .flip[aria-pressed="true"] .front { opacity: 0; }
+  .flip[aria-pressed="true"] .back { opacity: 1; }
 }

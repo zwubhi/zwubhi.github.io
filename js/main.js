@@ -650,4 +650,10 @@
   }
   layerInputs.forEach(i => i.addEventListener('change', updateLayers));
   updateLayers();
+  // flip cards: click, tap, Enter or Space toggles just that card
+  const featList = document.getElementById('features');
+  if (featList) featList.addEventListener('click', e => {
+    const b = e.target.closest('.flip'); if (!b) return;
+    b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
+  });
 })();
