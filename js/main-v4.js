@@ -21,6 +21,37 @@
   applyTheme(startTheme, false);
   themeBtns.forEach(b => b.addEventListener('click', () => applyTheme(b.dataset.themeSet, true)));
 
+  /* ---------- Sound toggle: off by default, lasts for this visit only ---------- */
+  const soundBtn = document.getElementById('sound-toggle');
+  let soundOn = false, audioCtx = null, chimeBuf = null, chimeLoading = false;
+  if (soundBtn) soundBtn.addEventListener('click', () => {
+    soundOn = !soundOn;
+    soundBtn.setAttribute('aria-pressed', String(soundOn));
+    soundBtn.setAttribute('aria-label', soundOn ? 'Sound on' : 'Sound off');
+    if (!soundOn) return;
+    // unlock audio inside the click so the chime can play later while scrolling (Safari, iPhone)
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    if (!audioCtx) audioCtx = new AC();
+    if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+    if (!chimeBuf && !chimeLoading) {
+      chimeLoading = true;
+      fetch('sounds/graduation-chime.mp3')
+        .then(r => { if (!r.ok) throw new Error('chime ' + r.status); return r.arrayBuffer(); })
+        .then(data => new Promise((res, rej) => audioCtx.decodeAudioData(data, res, rej)))
+        .then(buf => { chimeBuf = buf; })
+        .catch(() => { chimeLoading = false; });
+    }
+  });
+  function playChime() {
+    if (!soundOn || !audioCtx || !chimeBuf) return; // still loading: skip rather than play late
+    const src = audioCtx.createBufferSource(), gain = audioCtx.createGain();
+    gain.gain.value = 0.35;
+    src.buffer = chimeBuf;
+    src.connect(gain).connect(audioCtx.destination);
+    src.start();
+  }
+
   /* ---------- Reveal on scroll ---------- */
   const revealEls = document.querySelectorAll('.sec-head, .project, .job, .edu article, .features li, .layer-panel');
   if ('IntersectionObserver' in window && !reduceMotion) {
@@ -748,8 +779,9 @@
       }
       setTimeout(() => train.querySelectorAll('.confetti.burst').forEach(b => b.remove()), 1800);
     }
-    function celebrate(animate) {
+    function celebrate(animate, chime) {
       celebrated = true;
+      if (chime) playChime();
       line.classList.add(animate ? 'celebrate' : 'celebrated');
       restingConfetti();
       if (animate) { burstConfetti(); setTimeout(() => line.classList.replace('celebrate', 'celebrated'), 1600); }
@@ -772,7 +804,7 @@
       // the car's front touches the finish ribbon
       if (!celebrated && y + 36.5 >= finish.offsetTop + ribbon.offsetTop) {
         const jumped = lastY === null || y - lastY > innerHeight * 0.6 || performance.now() - navJump < 2000;
-        celebrate(!(jumped || reduceMotion));
+        celebrate(!(jumped || reduceMotion), !jumped);
       }
       lastY = y;
     }

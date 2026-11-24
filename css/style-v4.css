@@ -91,6 +91,11 @@ a:hover { color: var(--accent); }
   background: none; color: var(--ink-2); border: 0; border-radius: 999px; padding: 5px 12px; cursor: pointer;
 }
 .basemap button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.sound-toggle { margin-left: -20px; } /* sits right next to the Street/Satellite toggle */
+.sound-toggle button { padding-left: 10px; padding-right: 10px; } /* same font and vertical padding as Street/Satellite, so the same height */
+.sound-toggle svg { width: 14px; height: 14px; vertical-align: -2px; }
+.sound-toggle .ico-on, .sound-toggle [aria-pressed="true"] .ico-off { display: none; }
+.sound-toggle [aria-pressed="true"] .ico-on { display: inline; }
 
 /* BUTTONS */
 .btns { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 30px; }
@@ -400,6 +405,9 @@ input[type="radio"], input[type="checkbox"] { accent-color: var(--c-under); widt
   .nav { gap: 8px 12px; }
   .nav-name { font-size: 17px; }
   .basemap button { padding: 4px 9px; font-size: 11.5px; }
+  .sound-toggle { margin-left: -6px; }
+  .sound-toggle button { padding-left: 8px; padding-right: 8px; }
+  .sound-toggle svg { width: 13px; height: 13px; vertical-align: -2.5px; }
   .map { height: auto; min-height: 0; display: grid; grid-template-rows: 62svh auto auto; }
   .map-canvas { position: relative; inset: auto; grid-row: 1; }
   .map-grid { bottom: auto; height: 62svh; }
