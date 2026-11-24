@@ -309,6 +309,18 @@ input[type="radio"], input[type="checkbox"] { accent-color: var(--c-under); widt
 .celebrate .finish-flag .pennant { animation: flag-up .5s ease-out both; }
 .celebrated .finish-flag .pennant { top: 2px; }
 @keyframes flag-up { from { top: 46px; } to { top: 2px; } }
+.hop-bubble { position: absolute; left: calc(var(--x) + 28px); top: 0; z-index: 3; margin: 0; padding: 6px 10px; border: 1px solid var(--ink); border-radius: 10px; background: var(--paper); color: var(--ink); font: 500 12px/1.2 var(--sans); white-space: nowrap; cursor: pointer; transition: opacity .6s, top .08s linear; }
+.hop-bubble::before, .hop-bubble::after { content: ""; position: absolute; top: 50%; margin-top: -6px; border: 6px solid transparent; }
+.hop-bubble::before { left: -12px; border-right-color: var(--ink); }
+.hop-bubble::after { left: -10.5px; border-right-color: var(--paper); }
+.hop-bubble.left { left: auto; right: calc(100% - var(--x) + 30px); white-space: normal; width: max-content; max-width: 110px; text-align: center; }
+.hop-bubble.left::before { left: auto; right: -12px; border-right-color: transparent; border-left-color: var(--ink); }
+.hop-bubble.left::after { left: auto; right: -10.5px; border-right-color: transparent; border-left-color: var(--paper); }
+.hop-bubble.fade { opacity: 0; }
+.hop-bubble:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.train { cursor: pointer; }
+.train svg.wave { animation: rider-wave .5s ease 2; }
+@keyframes rider-wave { 0%, 100% { transform: translateY(0) rotate(0); } 30% { transform: translateY(-4px) rotate(-6deg); } 60% { transform: translateY(0) rotate(5deg); } }
 .confetti { position: absolute; width: 4px; height: 2px; border-radius: 1px; pointer-events: none; }
 .confetti.dot { width: 3px; height: 3px; border-radius: 50%; }
 .confetti.burst { opacity: 0; animation: confetti 1.5s cubic-bezier(.2,.6,.4,1) both; }

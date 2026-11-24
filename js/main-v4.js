@@ -765,6 +765,34 @@
     const flag = document.createElement('div'); flag.className = 'finish-flag'; flag.setAttribute('aria-hidden', 'true');
     flag.innerHTML = '<span class="pole"></span><span class="pennant">Class of 2026</span>';
     finish.append(ribbon, flag);
+
+    // "Hop in!" bubble: a playful nudge to tap, which also lets the browser play the chime later
+    const hop = document.createElement('button'); hop.type = 'button'; hop.className = 'hop-bubble'; hop.textContent = 'Hop in! Tap me';
+    hop.hidden = true;
+    line.append(hop);
+    let hopState = 'waiting'; // waiting, tapped, gone
+    function hopTap() {
+      if (hopState !== 'waiting') return;
+      hopState = 'tapped'; hop.textContent = "Let's go! Scroll down";
+      const svg = train.querySelector('svg'); svg.classList.remove('wave'); void svg.offsetWidth; svg.classList.add('wave');
+      setTimeout(() => { hop.classList.add('fade'); setTimeout(() => { hopState = 'gone'; hop.hidden = true; }, reduceMotion ? 0 : 600); }, 1800);
+    }
+    hop.addEventListener('click', hopTap);
+    train.addEventListener('click', hopTap);
+    ['click', 'touchend', 'keydown'].forEach(t => document.addEventListener(t, e => { // any other click or key press already unlocks the sound, so the bubble isn't needed
+      if (hopState === 'waiting' && !hop.contains(e.target) && !train.contains(e.target)) { hopState = 'gone'; hop.hidden = true; }
+    }));
+    function placeHop(y) {
+      if (hopState === 'gone') return;
+      if (hopState === 'waiting') {
+        const roomLeft = line.getBoundingClientRect().left >= 130; // wide screens: beside the car in the margin, clear of the text
+        const early = y < stops[Math.min(2, stops.length - 1)].offsetTop - 40; // narrow screens: only past the first two short stops
+        const show = soundOn && !audioCtx && !celebrated && (roomLeft || early);
+        hop.classList.toggle('left', roomLeft);
+        hop.hidden = !show;
+      }
+      hop.style.top = (y - 12.5) + 'px';
+    }
     const confettiColours = ['#ff6a3d', '#2438c4', '#128063', '#a8740a', '#e07a5f'];
     let celebrated = false, lastY = null, navJump = -Infinity;
     const navType = (performance.getEntriesByType('navigation')[0] || {}).type;
@@ -791,6 +819,7 @@
     }
     function celebrate(animate, chime) {
       celebrated = true;
+      if (hopState === 'waiting') { hopState = 'gone'; hop.hidden = true; }
       if (chime) playChime();
       line.classList.add(animate ? 'celebrate' : 'celebrated');
       restingConfetti();
@@ -817,6 +846,7 @@
         celebrate(!(jumped || reduceMotion), !jumped);
       }
       lastY = y;
+      placeHop(y);
     }
     let raf = 0;
     addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); }, { passive: true });
