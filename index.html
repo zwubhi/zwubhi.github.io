@@ -102,9 +102,8 @@
 <!-- PROJECTS -->
 <section class="section" id="projects" aria-labelledby="projects-h">
   <div class="sec-head">
-    <span class="grid-ref mono">A1</span>
-    <h2 id="projects-h">Projects, by location</h2>
-    <p class="sec-lede">Each project is pinned where the work happened. Scroll through them or click a pin. One of them is not on Earth.</p>
+    <h2 id="projects-h">Projects around the world</h2>
+    <p class="sec-lede">Each project is pinned where the work happened. Scroll through them or click a pin. The last one is off the map ;)</p>
   </div>
 
   <div class="atlas">
@@ -112,7 +111,7 @@
       <div class="globe-sticky">
         <canvas id="globe" width="520" height="520" aria-label="Globe showing project locations" role="img"></canvas>
         <div class="globe-label mono" id="globe-label" aria-live="polite">Drag to rotate</div>
-        <div class="globe-pins" id="globe-pins" role="group" aria-label="Jump to a project"></div>
+        <div class="basemap" id="globe-pins" role="group" aria-label="Earth or Moon"></div>
       </div>
     </div>
 
@@ -121,21 +120,22 @@
       <article class="project" id="p-paper" data-lat="27.02" data-lon="74.22" data-place="Rajasthan, India">
         <p class="p-loc mono">27.0°N 74.2°E · Rajasthan, India</p>
         <h3>Spatio-temporal modelling of climate impacts on crop yield</h3>
-        <p class="p-meta">Peer-reviewed paper · <em>International Journal of Information Technology</em> (Springer), October 2025 · First author</p>
+        <p class="p-meta">Published in <em>International Journal of Information Technology</em>, 2025</p>
         <div class="model" aria-label="Model structure">
           <div class="m-col">
             <span class="m-box">Graph neural network<small>how neighbouring districts affect each other</small></span>
-            <span class="m-box">LSTM with attention<small>how conditions build up over the season</small></span>
+            <span class="m-box">LSTM with attention</span>
           </div>
           <span class="m-arrow" aria-hidden="true"></span>
-          <span class="m-box m-key">Random-forest bagging<small>combines both into one yield estimate</small></span>
+          <span class="m-box m-key">Random-forest bagging<small>combines their predictions into one yield estimate</small></span>
         </div>
-        <p>I designed a hybrid model for agricultural and climate data from Rajasthan. A graph neural network captures the spatial links between districts, an LSTM with attention captures the timing within a season, and a random-forest bagging step combines their outputs.</p>
-        <p class="p-result"><span class="num mono">r = 0.68</span> correlation with observed yields, higher than the baseline spatio-temporal models compared in the paper. Also evaluated with MSE, MAE, RMSE and R².</p>
+        <p>I designed a hybrid model for agricultural and climate data from Rajasthan. A graph neural network captures the spatial links between districts, an LSTM with attention models change over the season, and a random-forest bagging step combines their outputs.</p>
+        <p class="p-result"><span class="num mono">r = 0.68</span> correlation with observed yields, higher than the baseline spatio-temporal models compared in the paper.</p>
         <!-- TODO: add the best baseline and its r, e.g. "against 0.5x for <model>" -->
-        <p class="p-limit">Limitation: the data covers one season (2018 to 2019), so the next step is testing across more years.</p>
-        <ul class="tags"><li>Graph neural networks</li><li>LSTM + attention</li><li>Ensembles</li></ul>
-        <a class="p-link" href="https://link.springer.com/article/10.1007/s41870-025-02715-6">Read the paper</a>
+        <p class="p-limit">Limitation: the model was trained and tested on a single season (2018 to 2019) from one state, so it may not hold for other years or regions.</p>
+        <p class="tags-head">Tools and frameworks used</p>
+        <ul class="tags"><li>Python</li><li>PyTorch</li><li>scikit-learn</li></ul>
+        <a class="p-link" href="https://link.springer.com/article/10.1007/s41870-025-02715-6" target="_blank" rel="noopener">Read the paper</a>
       </article>
 
       <article class="project" id="p-bus" data-lat="-27.47" data-lon="153.03" data-place="Brisbane, Australia">
@@ -189,7 +189,6 @@
 <!-- EXPERIENCE -->
 <section class="section" id="experience" aria-labelledby="exp-h">
   <div class="sec-head">
-    <span class="grid-ref mono">B2</span>
     <h2 id="exp-h">Experience, as a transit line</h2>
     <p class="sec-lede">From Chennai to Brisbane. The newest stops are at the top.</p>
   </div>
@@ -279,7 +278,6 @@
 <!-- SKILLS -->
 <section class="section" id="skills" aria-labelledby="skills-h">
   <div class="sec-head">
-    <span class="grid-ref mono">C3</span>
     <h2 id="skills-h">Skills, as map layers</h2>
     <p class="sec-lede">Turn layers on to see where each set of skills was used.</p>
   </div>
@@ -308,7 +306,6 @@
 <!-- EDUCATION -->
 <section class="section" id="education" aria-labelledby="edu-h">
   <div class="sec-head">
-    <span class="grid-ref mono">D4</span>
     <h2 id="edu-h">Education</h2>
   </div>
   <div class="edu">
@@ -343,7 +340,6 @@
 <footer class="footer" id="contact">
   <div class="footer-in">
     <div>
-      <span class="grid-ref mono">E5</span>
       <h2>Let's talk</h2>
       <p>I'm looking for graduate geospatial and data science roles in Brisbane, especially in transport and urban planning. Happy to walk through any of the work above.</p>
       <a class="btn btn-main" href="mailto:subhi.s003@gmail.com">subhi.s003@gmail.com</a>
