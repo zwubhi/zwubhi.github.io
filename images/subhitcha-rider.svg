@@ -1,70 +1,96 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="72" height="92" viewBox="0 0 72 92" role="img" aria-label="Subhitcha riding towards her dream">
-  <ellipse cx="36" cy="88" rx="27" ry="3" fill="#000" opacity=".14"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="92" viewBox="0 0 72 92" role="img" aria-label="Subhitcha riding towards her dream" xmlns:c2pa="http://c2pa.org/manifest">
+  <defs>
+    <clipPath id="sr-shirt"><path d="M20.5 61 C20.5 49.6 26.8 44.4 36 44.4 C45.2 44.4 51.5 49.6 51.5 61 Z"/></clipPath>
+    <clipPath id="sr-glass"><path d="M19.5 58.5 L52.5 58.5 L56 66.5 L16 66.5 Z"/></clipPath>
+  </defs>
+
+  <!-- ground shadow -->
+  <ellipse cx="36" cy="88.4" rx="27" ry="2.8" fill="#000" opacity=".14"/>
+
   <g class="me">
-  <!-- long wavy hair behind, lifting slightly in the wind -->
-  <path d="M36 8.5 C24 8.5 18.5 16 18.6 26 C18.7 31 17 35 15.5 39 C14 43 15 47 13 50.5 C17 51 19.5 49 20.5 46.5 C21 50 23 52.5 26 53 L46 53 C49 52.5 51 50 51.5 46.5 C52.5 49 55 51 59 50.5 C57 47 58 43 56.5 39 C55 35 53.3 31 53.4 26 C53.5 16 48 8.5 36 8.5 Z" fill="#1e1714"/>
-  <!-- caramel ends -->
-  <path d="M13 50.5 C16 50.8 18.5 49.5 20 47.5 C19 46 17.5 45.5 15.6 46 C15 47.8 14.2 49.3 13 50.5 Z" fill="#5a3b28"/>
-  <path d="M59 50.5 C56 50.8 53.5 49.5 52 47.5 C53 46 54.5 45.5 56.4 46 C57 47.8 57.8 49.3 59 50.5 Z" fill="#5a3b28"/>
-  <!-- waving arm -->
-  <path d="M47.5 47 C53 43 56 36 57 29" stroke="#4a3027" stroke-width="6" fill="none" stroke-linecap="round"/>
-  <path d="M49 45.4 C53.6 42 55.6 36.5 56.4 31" stroke="#b89a88" stroke-width=".5" fill="none" opacity=".6"/>
-  <ellipse cx="57.3" cy="26.4" rx="3.1" ry="3.5" fill="#c98b62"/>
-  <path d="M61.5 21.5 l2.6 -2 M62.5 26 l3 0 M61.5 30.5 l2.6 1.8" stroke="var(--ink-2, #4b5373)" stroke-width="1.1" stroke-linecap="round"/>
-  <!-- shirt: dark chocolate with pinstripes, collar and buttons -->
-  <path d="M21.5 55 C21.5 48 27 45 36 45 C45 45 50.5 48 50.5 55 L50.5 60 L21.5 60 Z" fill="#4a3027"/>
-  <g stroke="#b89a88" stroke-width=".45" opacity=".75"><path d="M25 47.6 V60 M27.6 46.4 V60 M30.2 45.6 V60 M41.8 45.6 V60 M44.4 46.4 V60 M47 47.6 V60"/></g>
-  <path d="M33 45.2 L36 49.5 L39 45.2 Z" fill="#b8784f"/>
-  <path d="M31.2 44.6 L36 49.8 L33.6 44.4 Z" fill="#5e3e31"/><path d="M40.8 44.6 L36 49.8 L38.4 44.4 Z" fill="#5e3e31"/>
-  <circle cx="36" cy="53" r=".8" fill="#2c1b15"/><circle cx="36" cy="57" r=".8" fill="#2c1b15"/>
-  <!-- neck -->
-  <path d="M32.6 39.5 L39.4 39.5 L39 45.5 L33 45.5 Z" fill="#a86f4a"/>
-  <!-- resting arm -->
-  <path d="M23.5 53 C20 54.5 17.5 56.5 15.5 58.5" stroke="#4a3027" stroke-width="6" fill="none" stroke-linecap="round"/>
-  <ellipse cx="14.6" cy="58.8" rx="3.1" ry="2.9" fill="#c98b62"/>
-  <!-- hair falling in front of the shoulders, wavy -->
-  <path d="M25.6 30 C24.8 36 22.5 39.5 23.4 43.5 C24.2 47 22.2 50 20.5 52.5 C24.5 52 27 49.5 27.4 46 C27.8 42.5 26.6 39.5 27.6 35.5 Z" fill="#1e1714"/>
-  <path d="M46.4 30 C47.2 36 49.5 39.5 48.6 43.5 C47.8 47 49.8 50 51.5 52.5 C47.5 52 45 49.5 44.6 46 C44.2 42.5 45.4 39.5 44.4 35.5 Z" fill="#1e1714"/>
-  <path d="M20.5 52.5 C22.5 52.3 24.2 51.4 25.4 50 C24.6 49.2 23.4 49 22.2 49.6 C21.8 50.8 21.2 51.7 20.5 52.5 Z" fill="#5a3b28"/>
-  <path d="M51.5 52.5 C49.5 52.3 47.8 51.4 46.6 50 C47.4 49.2 48.6 49 49.8 49.6 C50.2 50.8 50.8 51.7 51.5 52.5 Z" fill="#5a3b28"/>
-  <!-- face: oval with fuller cheeks -->
-  <path d="M26 26 C26 18.5 30.2 15 36 15 C41.8 15 46 18.5 46 26 C46 33.5 41.8 39.8 36 39.8 C30.2 39.8 26 33.5 26 26 Z" fill="#c98b62"/>
-  <path d="M26.2 27 C26.6 33 29.5 38 33 39.3 C29 37 27.4 32.5 27.2 27.5 Z" fill="#9a623f" opacity=".35"/>
-  <!-- hair: centre part framing the face -->
-  <path d="M25.2 29 C23.8 17.5 29 12.6 36 12.6 C43 12.6 48.2 17.5 46.8 29 C45.8 23 42.2 19.2 36.6 18.6 L36 16.2 L35.4 18.6 C29.8 19.2 26.2 23 25.2 29 Z" fill="#1e1714"/>
-  <!-- strong, softly arched brows -->
-  <path d="M28.7 24.5 C30.2 23.6 32.3 23.4 33.9 23.9" stroke="#1e1714" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-  <path d="M43.3 24.5 C41.8 23.6 39.7 23.4 38.1 23.9" stroke="#1e1714" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-  <!-- eyes: open, warm, slightly smiling -->
-  <path d="M29.1 27.2 C30.2 26.1 32.6 26 33.7 27 C32.6 27.6 30.3 27.7 29.1 27.2 Z" fill="#fff"/>
-  <path d="M38.3 27 C39.4 26 41.8 26.1 42.9 27.2 C41.7 27.7 39.4 27.6 38.3 27 Z" fill="#fff"/>
-  <circle cx="31.5" cy="26.95" r="1.05" fill="#2a1a12"/><circle cx="40.5" cy="26.95" r="1.05" fill="#2a1a12"/>
-  <circle cx="31.85" cy="26.6" r=".32" fill="#fff"/><circle cx="40.85" cy="26.6" r=".32" fill="#fff"/>
-  <path d="M28.8 27.3 C30.2 25.8 32.8 25.7 34 26.9" stroke="#1e1714" stroke-width=".9" fill="none" stroke-linecap="round"/>
-  <path d="M43.2 27.3 C41.8 25.8 39.2 25.7 38 26.9" stroke="#1e1714" stroke-width=".9" fill="none" stroke-linecap="round"/>
-  <path d="M29.4 28.1 Q31.4 28.9 33.4 27.8" stroke="#8a5536" stroke-width=".7" fill="none" stroke-linecap="round"/>
-  <path d="M38.6 27.8 Q40.6 28.9 42.6 28.1" stroke="#8a5536" stroke-width=".7" fill="none" stroke-linecap="round"/>
-  <!-- nose: soft rounded tip -->
-  <path d="M34.3 32.3 C34.8 33.2 35.5 33.3 36 33.1 C36.5 33.3 37.2 33.2 37.7 32.3" stroke="#8a5536" stroke-width=".8" fill="none" stroke-linecap="round"/><ellipse cx="36" cy="31.6" rx="1.3" ry="1" fill="#d99a70" opacity=".6"/>
-  <!-- closed-lip smile -->
-  <path d="M32.2 35.3 C34 36.9 38.4 36.9 40 35" stroke="#8e4a3a" stroke-width="1.1" fill="none" stroke-linecap="round"/>
-  <path d="M32.8 35.6 C34.6 37.6 38 37.6 39.4 35.5 C37.8 36.4 34.4 36.5 32.8 35.6 Z" fill="#a65a47"/>
-  <ellipse cx="30" cy="32.6" rx="2" ry="1.1" fill="#e07a5f" opacity=".25"/>
-  <ellipse cx="42" cy="32.6" rx="2" ry="1.1" fill="#e07a5f" opacity=".25"/>
+    <!-- hair, back layer: big, voluminous waves past the shoulders -->
+    <path d="M35 5.8 C25 5.8 18.4 11.8 17.9 20.8 C17.6 25.8 15.9 28.4 16.1 31.8 C16.3 34.8 17.9 36.2 16.7 39.2 C15.5 42 13.7 43.8 14.5 47.2 C15.2 50 17.1 51 16.3 53.8 C15.9 55.8 15.5 57.6 16.9 58.8 L55.1 58.8 C56.5 57.6 56.1 55.8 55.7 53.8 C54.9 51 56.8 50 57.5 47.2 C58.3 43.8 56.5 42 55.3 39.2 C54.1 36.2 55.7 34.8 55.9 31.8 C56.1 28.4 54.4 25.8 54.1 20.8 C53.6 11.8 47 5.8 35 5.8 Z" fill="#1d1613"/>
+    <path d="M18.4 44 C17.2 46.6 18.8 49 17.8 52" stroke="#7a4a2b" stroke-width="1" fill="none" stroke-linecap="round" opacity=".7"/>
+    <path d="M53.6 44 C54.8 46.6 53.2 49 54.2 52" stroke="#7a4a2b" stroke-width="1" fill="none" stroke-linecap="round" opacity=".7"/>
+    <!-- waving arm (her left), behind the shoulder -->
+    <path d="M47.4 48.4 C53 44.6 56.2 38 57.2 31" stroke="#4a3027" stroke-width="5.8" fill="none" stroke-linecap="round"/>
+    <path d="M48.8 46.8 C53.4 43.4 55.6 38 56.5 33" stroke="#b9998a" stroke-width=".45" fill="none" opacity=".55"/>
+    <ellipse cx="57.4" cy="27.4" rx="2.9" ry="3.3" fill="#c68a5c"/>
+    <g stroke="#c68a5c" stroke-width="1.3" stroke-linecap="round"><path d="M55.6 25.4 V22.6"/><path d="M57 24.8 V21.8"/><path d="M58.4 24.8 V22"/><path d="M59.7 25.6 V23.2"/><path d="M54.8 28.6 L53.2 27.2"/></g>
+    <g stroke="var(--ink-2, #4b5373)" stroke-width="1.1" stroke-linecap="round"><path d="M62.6 21.4 l2.5 -1.9"/><path d="M63.4 25.8 l3 0"/><path d="M62.6 30.2 l2.5 1.8"/></g>
+
+    <!-- neck -->
+    <path d="M33.2 36.5 L38.8 36.5 L38.8 46 L33.2 46 Z" fill="#b07448"/>
+    <path d="M33.2 38.2 C34.8 39.8 37.2 39.8 38.8 38.2 L38.8 40.4 C37.2 41.4 34.8 41.4 33.2 40.4 Z" fill="#8d5a38" opacity=".5"/>
+
+    <!-- shirt: chocolate brown with fine pinstripes, open collar, buttons -->
+    <path d="M20.5 61 C20.5 49.6 26.8 44.4 36 44.4 C45.2 44.4 51.5 49.6 51.5 61 Z" fill="#4a3027"/>
+    <g clip-path="url(#sr-shirt)" stroke="#b9998a" stroke-width=".35" opacity=".6">
+      <path d="M22.5 42 V62 M24.3 46 V62 M26.1 46 V62 M27.9 46 V62 M29.7 46 V62 M31.5 46 V62 M40.5 46 V62 M42.3 46 V62 M44.1 46 V62 M45.9 46 V62 M47.7 46 V62 M49.5 46 V62"/>
+    </g>
+    <path d="M33 44.4 L36 49 L39 44.4 Z" fill="#b07448"/>
+    <path d="M31 44 L36 49.3 L33.4 43.7 Z" fill="#5b3b2e"/>
+    <path d="M41 44 L36 49.3 L38.6 43.7 Z" fill="#5b3b2e"/>
+    <circle cx="36" cy="52.2" r=".7" fill="#2c1b15"/><circle cx="36" cy="56.2" r=".7" fill="#2c1b15"/>
+
+    <!-- face: slim oval, gently pointed chin, warm golden-brown -->
+    <path d="M27 24.8 C27 17.9 31 14.6 36 14.6 C41 14.6 45 17.9 45 24.8 C45 32.2 41.2 38.4 36 38.9 C30.8 38.4 27 32.2 27 24.8 Z" fill="#c68a5c"/>
+    <path d="M27.3 26.6 C27.7 32.4 30.4 37.2 34.2 38.7 C30.6 36.3 28.8 32 28.6 27 Z" fill="#9a623f" opacity=".28"/>
+
+    <!-- hair, front: soft side part, bigger sweep to her left, framing the face and falling over the shoulders -->
+    <path d="M33.5 13.6 C29 14 26 17.4 25.6 22.2 C25.3 26.4 26.1 30.2 25.1 34.2 C24.2 37.8 21.7 40.6 22.7 44.8 C23.5 48.2 21.3 51.4 19.5 54.6 C24.6 54.6 28.2 51.8 29.4 47.8 C30.4 44.4 31 41.8 30.2 38.8 C29.2 37.2 28 36.2 27.8 34.2 C27.4 30.6 27 26.8 27.6 23 C28.2 19.8 30.4 17.4 33 16.8 C33.6 16 33.8 14.8 33.5 13.6 Z" fill="#1d1613"/>
+    <path d="M33.3 13.4 C40.2 12.4 46 16.2 46.8 22.2 C47.5 27.4 46 31 47.2 35 C48.2 38.4 50.4 41 49.4 45.2 C48.6 48.4 50.6 51.4 52.4 54.6 C47.1 54.6 43.6 51.6 42.6 47.6 C41.6 44.2 41 41.8 41.8 39 C43 37.6 44.2 36.4 44.6 34.4 C45 30.4 44.4 26.4 42.8 23 C41 19.6 37.6 18.2 34.4 18.8 C33.4 17.4 33 15.4 33.3 13.4 Z" fill="#1d1613"/>
+    <!-- soft sheen and caramel tips on the front waves -->
+    <path d="M37.6 14.4 C41.4 14.8 44.2 16.9 45.3 20 C43.5 18.3 40.9 17 37.8 16.4 Z" fill="#6e4127" opacity=".45"/>
+    <path d="M19.5 54.6 C21 54.5 22.4 54 23.5 53.1 C22.9 52.5 22 52.4 21.2 52.8 C20.8 53.5 20.2 54.1 19.5 54.6 Z" fill="#8a5530"/>
+    <path d="M52.4 54.6 C50.9 54.5 49.5 54 48.4 53.1 C49 52.5 49.9 52.4 50.7 52.8 C51.1 53.5 51.7 54.1 52.4 54.6 Z" fill="#8a5530"/>
+    <path d="M46.3 36.6 C47.4 39.6 49.2 41.8 48.6 45.2" stroke="#7a4a2b" stroke-width=".7" fill="none" stroke-linecap="round" opacity=".8"/>
+    <path d="M25.7 36.6 C24.6 39.6 22.8 41.8 23.4 45.2" stroke="#7a4a2b" stroke-width=".7" fill="none" stroke-linecap="round" opacity=".8"/>
+
+    <!-- brows: defined, softly arched -->
+    <path d="M28.8 23.5 C30.3 22.4 32.4 22.3 33.9 23" stroke="#1d1613" stroke-width="1.15" fill="none" stroke-linecap="round"/>
+    <path d="M43.2 23.5 C41.7 22.4 39.6 22.3 38.1 23" stroke="#1d1613" stroke-width="1.15" fill="none" stroke-linecap="round"/>
+    <!-- eyes: warm almond shape, smiling a little -->
+    <path d="M29.4 26.8 C30.4 25.7 32.6 25.6 33.7 26.6 C32.7 27.5 30.5 27.6 29.4 26.8 Z" fill="#fff"/>
+    <path d="M38.3 26.6 C39.4 25.6 41.6 25.7 42.6 26.8 C41.5 27.6 39.3 27.5 38.3 26.6 Z" fill="#fff"/>
+    <circle cx="31.6" cy="26.55" r="1" fill="#2a1a12"/>
+    <circle cx="40.4" cy="26.55" r="1" fill="#2a1a12"/>
+    <circle cx="31.95" cy="26.2" r=".3" fill="#fff"/>
+    <circle cx="40.75" cy="26.2" r=".3" fill="#fff"/>
+    <path d="M29.1 26.9 C30.3 25.3 32.8 25.2 34 26.5" stroke="#1d1613" stroke-width=".85" fill="none" stroke-linecap="round"/>
+    <path d="M42.9 26.9 C41.7 25.3 39.2 25.2 38 26.5" stroke="#1d1613" stroke-width=".85" fill="none" stroke-linecap="round"/>
+    <!-- nose -->
+    <path d="M35.3 27.6 C35.1 29.2 34.8 30.4 34.9 31.2" stroke="#9a623f" stroke-width=".45" fill="none" opacity=".65"/>
+    <path d="M34.5 31.5 C35.1 32.3 36.9 32.3 37.5 31.5" stroke="#8a5536" stroke-width=".7" fill="none" stroke-linecap="round"/>
+    <!-- gentle closed-lip smile, lifting a little more on one side -->
+    <path d="M32.6 34.6 C34.4 35.9 37.8 35.9 39.8 34" stroke="#8a4636" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M33.1 34.9 C34.8 36.7 37.7 36.6 39.3 34.6 C37.7 35.5 34.8 35.6 33.1 34.9 Z" fill="#a85a4a"/>
+    <path d="M39.8 34 C40.1 33.7 40.3 33.4 40.3 33.1" stroke="#9a623f" stroke-width=".5" fill="none" stroke-linecap="round" opacity=".7"/>
+    <ellipse cx="30.2" cy="31.8" rx="1.8" ry="1" fill="#e07a5f" opacity=".2"/>
+    <ellipse cx="41.8" cy="31.8" rx="1.8" ry="1" fill="#e07a5f" opacity=".2"/>
   </g>
-  <!-- ===== the car, front view, coming towards you ===== -->
-  <path d="M17 60 C18 56 21 55 24 55 L48 55 C51 55 54 56 55 60 Z" fill="var(--route, #ff6a3d)"/>
-  <path d="M15 60 L57 60 L60 70 L12 70 Z" fill="var(--route, #ff6a3d)"/>
-  <path d="M18.5 61.5 L53.5 61.5 L56 68.5 L16 68.5 Z" fill="#cfe3f2" opacity=".85"/>
-  <path d="M22 62.5 L30 62.5 L26 67.5 L19.5 67.5 Z" fill="#fff" opacity=".55"/>
-  <rect x="8" y="69" width="56" height="13" rx="5" fill="var(--route, #ff6a3d)"/>
-  <circle cx="16" cy="75" r="3.2" fill="#fff7d6" stroke="#fff" stroke-width=".8"/>
-  <circle cx="56" cy="75" r="3.2" fill="#fff7d6" stroke="#fff" stroke-width=".8"/>
-  <rect x="26" y="72.5" width="20" height="5" rx="2.5" fill="#1b1f33" opacity=".55"/>
-  <rect x="31" y="79" width="10" height="2.6" rx="1" fill="#fff" opacity=".9"/>
+
+  <!-- ===== the car: little convertible, front view, coming towards you ===== -->
+  <!-- windscreen frame and glass (she sits behind it) -->
+  
+  <path d="M19.5 58.5 L52.5 58.5 L56 66.5 L16 66.5 Z" fill="#cfe3f2" opacity=".35"/>
+  <path d="M19.5 58.5 L52.5 58.5 L56 66.5 L16 66.5 Z" fill="none" stroke="var(--route, #ff6a3d)" stroke-width="1.6" stroke-linejoin="round"/>
+  <g clip-path="url(#sr-glass)"><path d="M22 58.5 L28 58.5 L22.5 66.5 L17.5 66.5 Z" fill="#fff" opacity=".45"/></g>
+  <!-- her resting hand on the door -->
+  <ellipse cx="15.6" cy="66.2" rx="3" ry="2.6" fill="#c68a5c"/>
+  <!-- body -->
+  <path d="M8 72 C8 68.2 10.6 66.4 14 66.4 L58 66.4 C61.4 66.4 64 68.2 64 72 L64 79 C64 81.2 62.4 82.4 60.4 82.4 L11.6 82.4 C9.6 82.4 8 81.2 8 79 Z" fill="var(--route, #ff6a3d)"/>
+  <path d="M10 69.4 L62 69.4" stroke="#fff" stroke-width=".6" opacity=".35"/>
+  <!-- mirrors -->
+  <rect x="7.4" y="62.6" width="6" height="3.6" rx="1.8" fill="var(--route, #ff6a3d)"/>
+  <rect x="58.6" y="62.6" width="6" height="3.6" rx="1.8" fill="var(--route, #ff6a3d)"/>
+  <!-- headlights, grille, plate, bumper -->
+  <circle cx="16.4" cy="74.2" r="3.4" fill="#fff7d6" stroke="#fff" stroke-width=".8"/>
+  <circle cx="55.6" cy="74.2" r="3.4" fill="#fff7d6" stroke="#fff" stroke-width=".8"/>
+  <rect x="26.5" y="71.8" width="19" height="4.6" rx="2.3" fill="#1b1f33" opacity=".5"/>
+  <rect x="31" y="77.8" width="10" height="2.6" rx="1" fill="#fff" opacity=".9"/>
   <rect x="9" y="81" width="54" height="3" rx="1.5" fill="#1b1f33" opacity=".35"/>
+  <!-- wheels -->
   <rect x="11" y="82" width="9" height="6" rx="2.5" fill="#2a2f45"/>
   <rect x="52" y="82" width="9" height="6" rx="2.5" fill="#2a2f45"/>
-  <rect x="7" y="62" width="6" height="4" rx="2" fill="var(--route, #ff6a3d)"/>
-  <rect x="59" y="62" width="6" height="4" rx="2" fill="var(--route, #ff6a3d)"/>
-</svg>
+<metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYToyMjliZjllNS1lOWNjLTQ2YTEtOTU1OS01ZjUzMjBhZWNjOWEAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaNle6fwPzFSw/kFQu0g91IEAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDpiYWIyYjA5Zi0zNjg5LTQ4MjMtODg1Ni1hZjkxNWM1MjgxNjFscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNo26puqEW89k9+VYJm6qgHlAAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggkO31kFQ2XR7gt6iF5B6G2Hp1+8f3/S0jB1KQ5XkYLiGkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaL4sfd0upcVnST+SgHbcJvQAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRMAAAAAAAAAAAAAAAAZGhhc2hYIPbPd2ofxkugku9weERvMKraNBKBZg/NEoXXt2JXgoxWZG5hbWVuanVtYmYgbWFuaWZlc3RqZXhjbHVzaW9uc4GiZXN0YXJ0GSD0Zmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjIyOWJmOWU1LWU5Y2MtNDZhMS05NTU5LTVmNTMyMGFlY2M5YS9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOmVlN2RjY2MzLTk5ODEtNDVhYi05ZDZjLWIwNjExZWQwZTYwM3JjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCCQ7fWQVDZdHuC3qIXkHobYenX7x/f9LSMHUpDleRguIaJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggNXXtzecYTTyFAcDtAdPkojo7IsMlPZWOrSMFGpbkOiSiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggkoO8MZ5dr5IYhkP+qTocwTnss650EXPu9CeQCdMsdr50Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQCudW44LKUmGQA3jKzEHBzqAz5gTKyfYISgbQnTfV9RZ7wwAoZSoBMNFCOpgCbQoD5kZHoAia5c+cEFV+j59imQ=</c2pa:manifest></metadata></svg>

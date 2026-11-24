@@ -606,22 +606,154 @@
   if (line) {
     const fill = document.createElement('div'); fill.className = 'line-fill';
     const train = document.createElement('div'); train.className = 'train'; train.setAttribute('aria-hidden', 'true');
-    // simple top-down bus facing down the line; front window holds the face photo
-    train.innerHTML = `<svg viewBox="0 0 24 44" xmlns="http://www.w3.org/2000/svg">
-      <defs><clipPath id="bus-face-clip"><circle cx="12" cy="35" r="6"/></clipPath></defs>
-      <rect class="bus-body" x="1.25" y="1.25" width="21.5" height="41.5" rx="6"/>
-      <rect class="bus-glass" x="6" y="4" width="12" height="2.5" rx="1.2" opacity=".55"/>
-      <rect class="bus-glass" x="5" y="9" width="14" height="17" rx="2" opacity=".18"/>
-      <circle class="bus-glass" cx="12" cy="35" r="6.5"/>
-      <image class="bus-face" x="5.5" y="28.5" width="13" height="13" preserveAspectRatio="xMidYMid slice" clip-path="url(#bus-face-clip)"/>
-    </svg>`;
-    const face = new Image(); // only show the photo once it exists in the images folder
-    face.onload = () => train.querySelector('.bus-face').setAttribute('href', face.src);
-    face.src = 'images/subhitcha-face.webp';
+    // the rider (images/subhitcha-rider.svg) inlined so it can use the page colour variables; the cap waits for the finish line
+    train.innerHTML = `<svg class="rider" viewBox="0 0 72 92" xmlns="http://www.w3.org/2000/svg" focusable="false">
+  <defs>
+    <clipPath id="sr-shirt"><path d="M20.5 61 C20.5 49.6 26.8 44.4 36 44.4 C45.2 44.4 51.5 49.6 51.5 61 Z"/></clipPath>
+    <clipPath id="sr-glass"><path d="M19.5 58.5 L52.5 58.5 L56 66.5 L16 66.5 Z"/></clipPath>
+  </defs>
+
+  <!-- ground shadow -->
+  <ellipse cx="36" cy="88.4" rx="27" ry="2.8" fill="#000" opacity=".14"/>
+
+  <g class="me">
+    <!-- hair, back layer: big, voluminous waves past the shoulders -->
+    <path d="M35 5.8 C25 5.8 18.4 11.8 17.9 20.8 C17.6 25.8 15.9 28.4 16.1 31.8 C16.3 34.8 17.9 36.2 16.7 39.2 C15.5 42 13.7 43.8 14.5 47.2 C15.2 50 17.1 51 16.3 53.8 C15.9 55.8 15.5 57.6 16.9 58.8 L55.1 58.8 C56.5 57.6 56.1 55.8 55.7 53.8 C54.9 51 56.8 50 57.5 47.2 C58.3 43.8 56.5 42 55.3 39.2 C54.1 36.2 55.7 34.8 55.9 31.8 C56.1 28.4 54.4 25.8 54.1 20.8 C53.6 11.8 47 5.8 35 5.8 Z" fill="#1d1613"/>
+    <path d="M18.4 44 C17.2 46.6 18.8 49 17.8 52" stroke="#7a4a2b" stroke-width="1" fill="none" stroke-linecap="round" opacity=".7"/>
+    <path d="M53.6 44 C54.8 46.6 53.2 49 54.2 52" stroke="#7a4a2b" stroke-width="1" fill="none" stroke-linecap="round" opacity=".7"/>
+    <!-- waving arm (her left), behind the shoulder -->
+    <path d="M47.4 48.4 C53 44.6 56.2 38 57.2 31" stroke="#4a3027" stroke-width="5.8" fill="none" stroke-linecap="round"/>
+    <path d="M48.8 46.8 C53.4 43.4 55.6 38 56.5 33" stroke="#b9998a" stroke-width=".45" fill="none" opacity=".55"/>
+    <ellipse cx="57.4" cy="27.4" rx="2.9" ry="3.3" fill="#c68a5c"/>
+    <g stroke="#c68a5c" stroke-width="1.3" stroke-linecap="round"><path d="M55.6 25.4 V22.6"/><path d="M57 24.8 V21.8"/><path d="M58.4 24.8 V22"/><path d="M59.7 25.6 V23.2"/><path d="M54.8 28.6 L53.2 27.2"/></g>
+    <g stroke="var(--ink-2, #4b5373)" stroke-width="1.1" stroke-linecap="round"><path d="M62.6 21.4 l2.5 -1.9"/><path d="M63.4 25.8 l3 0"/><path d="M62.6 30.2 l2.5 1.8"/></g>
+
+    <!-- neck -->
+    <path d="M33.2 36.5 L38.8 36.5 L38.8 46 L33.2 46 Z" fill="#b07448"/>
+    <path d="M33.2 38.2 C34.8 39.8 37.2 39.8 38.8 38.2 L38.8 40.4 C37.2 41.4 34.8 41.4 33.2 40.4 Z" fill="#8d5a38" opacity=".5"/>
+
+    <!-- shirt: chocolate brown with fine pinstripes, open collar, buttons -->
+    <path d="M20.5 61 C20.5 49.6 26.8 44.4 36 44.4 C45.2 44.4 51.5 49.6 51.5 61 Z" fill="#4a3027"/>
+    <g clip-path="url(#sr-shirt)" stroke="#b9998a" stroke-width=".35" opacity=".6">
+      <path d="M22.5 42 V62 M24.3 46 V62 M26.1 46 V62 M27.9 46 V62 M29.7 46 V62 M31.5 46 V62 M40.5 46 V62 M42.3 46 V62 M44.1 46 V62 M45.9 46 V62 M47.7 46 V62 M49.5 46 V62"/>
+    </g>
+    <path d="M33 44.4 L36 49 L39 44.4 Z" fill="#b07448"/>
+    <path d="M31 44 L36 49.3 L33.4 43.7 Z" fill="#5b3b2e"/>
+    <path d="M41 44 L36 49.3 L38.6 43.7 Z" fill="#5b3b2e"/>
+    <circle cx="36" cy="52.2" r=".7" fill="#2c1b15"/><circle cx="36" cy="56.2" r=".7" fill="#2c1b15"/>
+
+    <!-- face: slim oval, gently pointed chin, warm golden-brown -->
+    <path d="M27 24.8 C27 17.9 31 14.6 36 14.6 C41 14.6 45 17.9 45 24.8 C45 32.2 41.2 38.4 36 38.9 C30.8 38.4 27 32.2 27 24.8 Z" fill="#c68a5c"/>
+    <path d="M27.3 26.6 C27.7 32.4 30.4 37.2 34.2 38.7 C30.6 36.3 28.8 32 28.6 27 Z" fill="#9a623f" opacity=".28"/>
+
+    <!-- hair, front: soft side part, bigger sweep to her left, framing the face and falling over the shoulders -->
+    <path d="M33.5 13.6 C29 14 26 17.4 25.6 22.2 C25.3 26.4 26.1 30.2 25.1 34.2 C24.2 37.8 21.7 40.6 22.7 44.8 C23.5 48.2 21.3 51.4 19.5 54.6 C24.6 54.6 28.2 51.8 29.4 47.8 C30.4 44.4 31 41.8 30.2 38.8 C29.2 37.2 28 36.2 27.8 34.2 C27.4 30.6 27 26.8 27.6 23 C28.2 19.8 30.4 17.4 33 16.8 C33.6 16 33.8 14.8 33.5 13.6 Z" fill="#1d1613"/>
+    <path d="M33.3 13.4 C40.2 12.4 46 16.2 46.8 22.2 C47.5 27.4 46 31 47.2 35 C48.2 38.4 50.4 41 49.4 45.2 C48.6 48.4 50.6 51.4 52.4 54.6 C47.1 54.6 43.6 51.6 42.6 47.6 C41.6 44.2 41 41.8 41.8 39 C43 37.6 44.2 36.4 44.6 34.4 C45 30.4 44.4 26.4 42.8 23 C41 19.6 37.6 18.2 34.4 18.8 C33.4 17.4 33 15.4 33.3 13.4 Z" fill="#1d1613"/>
+    <!-- soft sheen and caramel tips on the front waves -->
+    <path d="M37.6 14.4 C41.4 14.8 44.2 16.9 45.3 20 C43.5 18.3 40.9 17 37.8 16.4 Z" fill="#6e4127" opacity=".45"/>
+    <path d="M19.5 54.6 C21 54.5 22.4 54 23.5 53.1 C22.9 52.5 22 52.4 21.2 52.8 C20.8 53.5 20.2 54.1 19.5 54.6 Z" fill="#8a5530"/>
+    <path d="M52.4 54.6 C50.9 54.5 49.5 54 48.4 53.1 C49 52.5 49.9 52.4 50.7 52.8 C51.1 53.5 51.7 54.1 52.4 54.6 Z" fill="#8a5530"/>
+    <path d="M46.3 36.6 C47.4 39.6 49.2 41.8 48.6 45.2" stroke="#7a4a2b" stroke-width=".7" fill="none" stroke-linecap="round" opacity=".8"/>
+    <path d="M25.7 36.6 C24.6 39.6 22.8 41.8 23.4 45.2" stroke="#7a4a2b" stroke-width=".7" fill="none" stroke-linecap="round" opacity=".8"/>
+
+    <!-- brows: defined, softly arched -->
+    <path d="M28.8 23.5 C30.3 22.4 32.4 22.3 33.9 23" stroke="#1d1613" stroke-width="1.15" fill="none" stroke-linecap="round"/>
+    <path d="M43.2 23.5 C41.7 22.4 39.6 22.3 38.1 23" stroke="#1d1613" stroke-width="1.15" fill="none" stroke-linecap="round"/>
+    <!-- eyes: warm almond shape, smiling a little -->
+    <path d="M29.4 26.8 C30.4 25.7 32.6 25.6 33.7 26.6 C32.7 27.5 30.5 27.6 29.4 26.8 Z" fill="#fff"/>
+    <path d="M38.3 26.6 C39.4 25.6 41.6 25.7 42.6 26.8 C41.5 27.6 39.3 27.5 38.3 26.6 Z" fill="#fff"/>
+    <circle cx="31.6" cy="26.55" r="1" fill="#2a1a12"/>
+    <circle cx="40.4" cy="26.55" r="1" fill="#2a1a12"/>
+    <circle cx="31.95" cy="26.2" r=".3" fill="#fff"/>
+    <circle cx="40.75" cy="26.2" r=".3" fill="#fff"/>
+    <path d="M29.1 26.9 C30.3 25.3 32.8 25.2 34 26.5" stroke="#1d1613" stroke-width=".85" fill="none" stroke-linecap="round"/>
+    <path d="M42.9 26.9 C41.7 25.3 39.2 25.2 38 26.5" stroke="#1d1613" stroke-width=".85" fill="none" stroke-linecap="round"/>
+    <!-- nose -->
+    <path d="M35.3 27.6 C35.1 29.2 34.8 30.4 34.9 31.2" stroke="#9a623f" stroke-width=".45" fill="none" opacity=".65"/>
+    <path d="M34.5 31.5 C35.1 32.3 36.9 32.3 37.5 31.5" stroke="#8a5536" stroke-width=".7" fill="none" stroke-linecap="round"/>
+    <!-- gentle closed-lip smile, lifting a little more on one side -->
+    <path d="M32.6 34.6 C34.4 35.9 37.8 35.9 39.8 34" stroke="#8a4636" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M33.1 34.9 C34.8 36.7 37.7 36.6 39.3 34.6 C37.7 35.5 34.8 35.6 33.1 34.9 Z" fill="#a85a4a"/>
+    <path d="M39.8 34 C40.1 33.7 40.3 33.4 40.3 33.1" stroke="#9a623f" stroke-width=".5" fill="none" stroke-linecap="round" opacity=".7"/>
+    <ellipse cx="30.2" cy="31.8" rx="1.8" ry="1" fill="#e07a5f" opacity=".2"/>
+    <ellipse cx="41.8" cy="31.8" rx="1.8" ry="1" fill="#e07a5f" opacity=".2"/>
+  </g>
+
+  <!-- graduation cap (images/grad-cap.svg), nudged 3 units up so it sits on the hair -->
+  <g transform="translate(0 -3)"><g class="cap">
+    <path d="M36 4.5 L53 10.5 L36 16.5 L19 10.5 Z" fill="#172045"/>
+  <path d="M25.5 13 L25.5 16.8 C29 19 43 19 46.5 16.8 L46.5 13 L36 16.5 Z" fill="#232c5c"/>
+  <circle cx="36" cy="10.5" r="1.1" fill="#ff6a3d"/>
+  <path d="M36 10.5 L48 13.5 L48.6 20" stroke="#ff6a3d" stroke-width="1" fill="none"/>
+  <path d="M47.6 19.5 L49.6 19.5 L49.2 23.5 L48 23.5 Z" fill="#ff6a3d"/>
+  </g></g>
+
+  <!-- ===== the car: little convertible, front view, coming towards you ===== -->
+  <!-- windscreen frame and glass (she sits behind it) -->
+  
+  <path d="M19.5 58.5 L52.5 58.5 L56 66.5 L16 66.5 Z" fill="#cfe3f2" opacity=".35"/>
+  <path d="M19.5 58.5 L52.5 58.5 L56 66.5 L16 66.5 Z" fill="none" stroke="var(--route, #ff6a3d)" stroke-width="1.6" stroke-linejoin="round"/>
+  <g clip-path="url(#sr-glass)"><path d="M22 58.5 L28 58.5 L22.5 66.5 L17.5 66.5 Z" fill="#fff" opacity=".45"/></g>
+  <!-- her resting hand on the door -->
+  <ellipse cx="15.6" cy="66.2" rx="3" ry="2.6" fill="#c68a5c"/>
+  <!-- body -->
+  <path d="M8 72 C8 68.2 10.6 66.4 14 66.4 L58 66.4 C61.4 66.4 64 68.2 64 72 L64 79 C64 81.2 62.4 82.4 60.4 82.4 L11.6 82.4 C9.6 82.4 8 81.2 8 79 Z" fill="var(--route, #ff6a3d)"/>
+  <path d="M10 69.4 L62 69.4" stroke="#fff" stroke-width=".6" opacity=".35"/>
+  <!-- mirrors -->
+  <rect x="7.4" y="62.6" width="6" height="3.6" rx="1.8" fill="var(--route, #ff6a3d)"/>
+  <rect x="58.6" y="62.6" width="6" height="3.6" rx="1.8" fill="var(--route, #ff6a3d)"/>
+  <!-- headlights, grille, plate, bumper -->
+  <circle cx="16.4" cy="74.2" r="3.4" fill="#fff7d6" stroke="#fff" stroke-width=".8"/>
+  <circle cx="55.6" cy="74.2" r="3.4" fill="#fff7d6" stroke="#fff" stroke-width=".8"/>
+  <rect x="26.5" y="71.8" width="19" height="4.6" rx="2.3" fill="#1b1f33" opacity=".5"/>
+  <rect x="31" y="77.8" width="10" height="2.6" rx="1" fill="#fff" opacity=".9"/>
+  <rect x="9" y="81" width="54" height="3" rx="1.5" fill="#1b1f33" opacity=".35"/>
+  <!-- wheels -->
+  <rect x="11" y="82" width="9" height="6" rx="2.5" fill="#2a2f45"/>
+  <rect x="52" y="82" width="9" height="6" rx="2.5" fill="#2a2f45"/>
+</svg>`;
     line.append(fill, train);
     const stops = [...line.querySelectorAll('.stop')];
     const transfer = line.querySelector('.stop.transfer');
     let lastReached = -1;
+
+    // graduation celebration at the final stop: finish ribbon, flag, cap and confetti (plays once)
+    const finish = stops[stops.length - 1];
+    const ribbon = document.createElement('div'); ribbon.className = 'finish-ribbon'; ribbon.setAttribute('aria-hidden', 'true');
+    ribbon.innerHTML = '<span class="half left"></span><span class="half right"></span>';
+    const flag = document.createElement('div'); flag.className = 'finish-flag'; flag.setAttribute('aria-hidden', 'true');
+    flag.innerHTML = '<span class="pole"></span><span class="pennant">Class of 2026</span>';
+    finish.append(ribbon, flag);
+    const confettiColours = ['#ff6a3d', '#2438c4', '#128063', '#a8740a', '#e07a5f'];
+    let celebrated = false, lastY = null, navJump = -Infinity;
+    const navType = (performance.getEntriesByType('navigation')[0] || {}).type;
+    if (location.hash || navType === 'reload' || navType === 'back_forward') navJump = performance.now(); // opened at a section link, or the browser is restoring the scroll position
+    document.addEventListener('click', e => { if (e.target.closest('a[href^="#"]')) navJump = performance.now(); }); // nav jumps show the end state
+    function restingConfetti() {
+      // five pieces left on the ground beside the wheels
+      [[-4, 49, 0, 20], [1, 50.5, 2, -30], [6, 49.5, 1, 60], [35, 50, 3, -15], [40, 49, 4, 35]].forEach(([x, yy, c, r], i) => {
+        const b = document.createElement('i'); b.className = 'confetti rest' + (i % 2 ? ' dot' : '');
+        b.style.cssText = `left:${x}px;top:${yy}px;background:${confettiColours[c]};transform:rotate(${r}deg)`;
+        train.append(b);
+      });
+    }
+    function burstConfetti() {
+      // two bursts from the car's sides, flying outwards and away from the face
+      for (let i = 0; i < 40; i++) {
+        const side = i % 2 ? 1 : -1;
+        const b = document.createElement('i'); b.className = 'confetti burst' + (i % 3 === 0 ? ' dot' : '');
+        const dx = side * (14 + Math.random() * 46), up = 18 + Math.random() * 34, fall = 30 + Math.random() * 40;
+        b.style.cssText = `left:${side < 0 ? 4 : 34}px;top:${36 + Math.random() * 8}px;background:${confettiColours[i % 5]};--dx:${dx.toFixed(1)}px;--up:${(-up).toFixed(1)}px;--fall:${fall.toFixed(1)}px;--rot:${(side * (180 + Math.random() * 360)).toFixed(0)}deg;animation-delay:${(Math.random() * 120).toFixed(0)}ms`;
+        train.append(b);
+      }
+      setTimeout(() => train.querySelectorAll('.confetti.burst').forEach(b => b.remove()), 1800);
+    }
+    function celebrate(animate) {
+      celebrated = true;
+      line.classList.add(animate ? 'celebrate' : 'celebrated');
+      restingConfetti();
+      if (animate) { burstConfetti(); setTimeout(() => line.classList.replace('celebrate', 'celebrated'), 1600); }
+    }
     function update() {
       const r = line.getBoundingClientRect();
       const h = line.offsetHeight - 20;
@@ -637,6 +769,12 @@
       stops.forEach(s => { const on = s.offsetTop + 8 <= y + 10; s.classList.toggle('reached', on); if (on) reached++; });
       if (reached > lastReached && lastReached >= 0) { train.classList.remove('bounce'); void train.offsetWidth; train.classList.add('bounce'); } // tiny bounce on arriving at a stop
       lastReached = reached;
+      // the car's front touches the finish ribbon
+      if (!celebrated && y + 36.5 >= finish.offsetTop + ribbon.offsetTop) {
+        const jumped = lastY === null || y - lastY > innerHeight * 0.6 || performance.now() - navJump < 2000;
+        celebrate(!(jumped || reduceMotion));
+      }
+      lastY = y;
     }
     let raf = 0;
     addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); }, { passive: true });
