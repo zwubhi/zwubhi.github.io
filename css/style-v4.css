@@ -191,14 +191,6 @@ input[type="radio"], input[type="checkbox"] { accent-color: var(--c-under); widt
 .map-zoom button { width: 38px; height: 38px; border: 0; background: none; color: var(--ink); font-size: 18px; cursor: pointer; }
 .map-zoom button + button { border-top: 1px solid var(--line); }
 .map-zoom button:hover { background: var(--paper-2); }
-.map-scale { position: absolute; left: 16px; bottom: 74px; z-index: 3; display: grid; grid-template-columns: auto auto; align-items: center; column-gap: 6px; row-gap: 1px; font-size: 11px; line-height: 1.2; color: var(--ink); background: color-mix(in srgb, var(--paper) 85%, transparent); padding: 4px 8px; border-radius: 4px; }
-.map-scale .bar { display: block; box-sizing: content-box; height: 7px; width: 80px; border: 1px solid var(--ink); background: linear-gradient(90deg, var(--ink) 50%, var(--paper) 50%); }
-.map-scale .ticks { grid-column: 1; grid-row: 2; position: relative; height: 1.2em; }
-.map-scale .ticks span { position: absolute; top: 0; white-space: nowrap; }
-.map-scale .t0 { left: 0; }
-.map-scale .t1 { left: 50%; transform: translateX(-50%); }
-.map-scale .t2 { right: 0; transform: translateX(50%); }
-.map-scale .unit { grid-column: 2; grid-row: 2; padding-left: 4px; }
 .map-tip {
   position: absolute; z-index: 6; pointer-events: none;
   background: var(--ink); color: var(--paper);
@@ -414,7 +406,6 @@ input[type="radio"], input[type="checkbox"] { accent-color: var(--c-under); widt
   .map-panel { position: relative; top: auto; right: auto; width: auto; grid-row: 2; margin: 0; border-radius: 0; border-width: 1px 0 0; box-shadow: none; backdrop-filter: none; }
   .map-cap { position: relative; grid-row: 3; }
   .map-zoom { top: calc(62svh - 132px); bottom: auto; }
-  .map-scale { top: calc(62svh - 46px); bottom: auto; }
   .edu, .footer-in { grid-template-columns: minmax(0, 1fr); }
   .facts div { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .facts dd { text-align: left; }

@@ -21,30 +21,37 @@
   applyTheme(startTheme, false);
   themeBtns.forEach(b => b.addEventListener('click', () => applyTheme(b.dataset.themeSet, true)));
 
-  /* ---------- Sound toggle: off by default, lasts for this visit only ---------- */
+  /* ---------- Sound toggle: on by default, lasts for this visit only ---------- */
   const soundBtn = document.getElementById('sound-toggle');
-  let soundOn = false, audioCtx = null, chimeBuf = null, chimeLoading = false;
+  let soundOn = true, audioCtx = null, chimeBuf = null;
   if (soundBtn) soundBtn.addEventListener('click', () => {
     soundOn = !soundOn;
     soundBtn.setAttribute('aria-pressed', String(soundOn));
     soundBtn.setAttribute('aria-label', soundOn ? 'Sound on' : 'Sound off');
-    if (!soundOn) return;
-    // unlock audio inside the click so the chime can play later while scrolling (Safari, iPhone)
+  });
+  // browsers block sound until the visitor clicks, taps or presses a key (scrolling doesn't count),
+  // so unlock the audio and preload the chime on the first one, anywhere on the page
+  const unlockEvents = ['click', 'touchend', 'keydown'];
+  function unlockAudio() {
+    unlockEvents.forEach(t => document.removeEventListener(t, unlockAudio, true));
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return;
-    if (!audioCtx) audioCtx = new AC();
-    if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
-    if (!chimeBuf && !chimeLoading) {
-      chimeLoading = true;
-      fetch('sounds/graduation-chime.mp3')
-        .then(r => { if (!r.ok) throw new Error('chime ' + r.status); return r.arrayBuffer(); })
-        .then(data => new Promise((res, rej) => audioCtx.decodeAudioData(data, res, rej)))
-        .then(buf => { chimeBuf = buf; })
-        .catch(() => { chimeLoading = false; });
-    }
-  });
+    try {
+      audioCtx = new AC();
+      if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+      const prime = audioCtx.createBufferSource(); // a silent blip primes Safari and iPhone
+      prime.buffer = audioCtx.createBuffer(1, 1, 22050);
+      prime.connect(audioCtx.destination); prime.start();
+    } catch (e) { audioCtx = null; return; }
+    fetch('sounds/graduation-chime.mp3')
+      .then(r => { if (!r.ok) throw new Error('chime ' + r.status); return r.arrayBuffer(); })
+      .then(data => new Promise((res, rej) => audioCtx.decodeAudioData(data, res, rej)))
+      .then(buf => { chimeBuf = buf; })
+      .catch(() => {});
+  }
+  unlockEvents.forEach(t => document.addEventListener(t, unlockAudio, true));
   function playChime() {
-    if (!soundOn || !audioCtx || !chimeBuf) return; // still loading: skip rather than play late
+    if (!soundOn || !audioCtx || !chimeBuf || audioCtx.state !== 'running') return; // not unlocked or still loading: skip silently
     const src = audioCtx.createBufferSource(), gain = audioCtx.createGain();
     gain.gain.value = 0.35;
     src.buffer = chimeBuf;
@@ -68,7 +75,6 @@
   const panel = document.getElementById('map-panel');
   const zoomBox = document.getElementById('map-zoom');
   const coordsEl = document.getElementById('map-coords');
-  const scaleEl = document.getElementById('map-scale');
   const legendEl = document.getElementById('map-legend');
   const SVGNS = 'http://www.w3.org/2000/svg';
   const K = 1000; // projected units per degree of latitude
@@ -164,7 +170,6 @@
       world.setAttribute('transform', `translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${s.toFixed(5)})`);
       const r = (5 / s).toFixed(3);
       stopEls.forEach(c => c.setAttribute('r', r));
-      updateScale();
       svg.style.touchAction = (s > base * 1.05) ? 'none' : 'pan-y';
     }
     function resize(keep) {
@@ -199,32 +204,6 @@
       const wx = (px - tx) / s, wy = (py - ty) / s;
       const ntx = px - wx * ns, nty = py - wy * ns;
       if (smooth) animateTo(ns, ntx, nty); else { s = ns; tx = ntx; ty = nty; apply(); }
-    }
-
-    function geoDist(lo1, la1, lo2, la2) { // great-circle distance in metres
-      const R = 6371008.8, r = Math.PI / 180, dLa = (la2 - la1) * r, dLo = (lo2 - lo1) * r;
-      const h = Math.sin(dLa / 2) ** 2 + Math.cos(la1 * r) * Math.cos(la2 * r) * Math.sin(dLo / 2) ** 2;
-      return 2 * R * Math.asin(Math.sqrt(h));
-    }
-    function updateScale() {
-      // metres per screen pixel, measured from the map's own projection at the current zoom,
-      // including any CSS/SVG scaling between map units and real screen pixels
-      const ctm = world.getScreenCTM();
-      if (!ctm || !W) return;
-      const pxPerUnit = Math.hypot(ctm.a, ctm.b);
-      const cx = (W / 2 - tx) / s, cy = (H / 2 - ty) / s, half = 50 / pxPerUnit;
-      const [lo1, la1] = inv(cx - half, cy), [lo2, la2] = inv(cx + half, cy);
-      const mPerPx = geoDist(lo1, la1, lo2, la2) / 100;
-      // round length whose bar is 60-120 px: steps of 1, 2, 4, 5 x 10^n are never more than 2x apart
-      let len = 1000;
-      outer: for (let e = 1; e <= 6; e++) for (const m of [1, 2, 4, 5]) { const L = m * 10 ** e; if (L / mPerPx >= 60) { len = L; break outer; } }
-      const px = len / mPerPx;
-      scaleEl.querySelector('.bar').style.width = px.toFixed(1) + 'px';
-      scaleEl.querySelector('.ticks').style.width = px.toFixed(1) + 'px';
-      const km = len >= 1000, v = km ? len / 1000 : len;
-      scaleEl.querySelector('.t1').textContent = String(v / 2);
-      scaleEl.querySelector('.t2').textContent = String(v);
-      scaleEl.querySelector('.unit').textContent = km ? 'km' : 'm';
     }
 
     /* --- interaction: pan, zoom --- */
@@ -379,8 +358,14 @@
     /* --- search --- */
     const search = document.getElementById('map-search');
     const dl = document.getElementById('suburb-list');
-    dl.innerHTML = subs.map(d => d.props.name).sort().map(n => `<option value="${esc(n)}">`).join('');
+    const DEFAULT_VIEW = 'Default view', startPlaceholder = search.placeholder;
+    dl.innerHTML = `<option value="${DEFAULT_VIEW}">` + subs.map(d => d.props.name).sort().map(n => `<option value="${esc(n)}">`).join('');
     function goTo(name) {
+      if (name.trim().toLowerCase() === DEFAULT_VIEW.toLowerCase()) { // same as the reset button, and the box goes back to the placeholder
+        const f = fit(core); animateTo(f.s, f.tx, f.ty); clearSel();
+        search.value = ''; search.placeholder = startPlaceholder;
+        return true;
+      }
       const d = subs.find(x => x.props.name.toLowerCase() === name.trim().toLowerCase());
       if (!d) return false;
       flyTo(d);
