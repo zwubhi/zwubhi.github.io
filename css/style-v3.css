@@ -391,11 +391,23 @@ input[type="radio"], input[type="checkbox"] { accent-color: var(--c-under); widt
   .m-arrow::after { right: -4px; top: auto; bottom: -1px; border: 4.5px solid transparent; border-top: 6px solid var(--ink-2); }
 }
 /* FOOTER LAYOUT WITH PORTRAIT */
-@media (min-width: 900px) {
-  .footer-in { grid-template-columns: 240px 48px minmax(0, 1fr) 64px minmax(0, 1fr); gap: 0; align-items: center; }
-  .footer-portrait { grid-column: 1; }
-  .footer-text { grid-column: 3; }
-  .footer .contact { grid-column: 5; }
+@media (min-width: 900px) and (max-width: 1199px) {
+  .footer { padding-bottom: 0; }
+  .footer-in { grid-template-columns: minmax(0, 1fr) 280px; grid-template-rows: auto auto; column-gap: 48px; row-gap: 32px; align-items: end; }
+  .footer-text { grid-column: 1; grid-row: 1; align-self: start; }
+  .footer .contact { grid-column: 1; grid-row: 2; margin-bottom: 28px; }
+  .footer-portrait { grid-column: 2; grid-row: 1 / span 2; width: 280px; height: 350px; }
+  .footer .colophon { margin-top: 0; padding-bottom: 28px; }
+}
+@media (min-width: 1200px) {
+  .footer { position: relative; margin-top: 165px; padding-top: 64px; min-height: calc(min(440px, 30vw) * 1.25 - 110px); } /* room above for the head to break out */
+  .footer-in { grid-template-columns: minmax(0, 1fr) min(440px, 30vw); grid-template-rows: auto auto; column-gap: 64px; row-gap: 36px; }
+  .footer-text { grid-column: 1; grid-row: 1; }
+  .footer-text p { max-width: 46ch; }
+  .footer .contact { grid-column: 1; grid-row: 2; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; }
+  .footer .colophon { padding-right: calc(min(440px, 30vw) + 64px); }
+  /* portrait stands on the footer's bottom edge, head rising above its top edge, lined up with the content's right edge */
+  .footer-portrait { position: absolute; bottom: 0; right: calc(var(--pad) + max(0px, (100% - 2 * var(--pad) - 1320px) / 2)); width: min(440px, 30vw); height: auto; }
 }
 @media (min-width: 600px) and (max-width: 899px) {
   .footer-in { grid-template-columns: 200px 32px minmax(0, 1fr); gap: 40px 0; align-items: center; }

@@ -259,7 +259,7 @@
         subs.forEach(d => { const c = d.props.category || 'No data'; counts[c] = (counts[c] || 0) + 1; d.el.style.fill = `var(${CAT[c] || '--c-none'})`; });
         legendEl.innerHTML = ['Under-served', 'Balanced', 'Well-served', 'No data'].filter(c => counts[c]).map(c =>
           `<div class="legend-row"><i style="background:var(${CAT[c]})"></i>${c}<span class="n">${counts[c]}</span></div>`).join('') +
-          `<p class="legend-note">Deficit = demand (density) − supply (departures). Balanced: score rounds to 0.</p>`;
+          `<p class="legend-note">Deficit = demand (density) − supply (departures).</p>`;
       } else {
         const br = quantiles(layer);
         const cls = v => v == null ? -1 : br.findIndex(b => v <= b) === -1 ? 4 : br.findIndex(b => v <= b);
@@ -270,7 +270,7 @@
           const a = Math.round(lo[i]), b = i < 4 ? Math.round(br[i]) : null;
           return `<div class="legend-row"><i style="background:var(--r${i + 1})"></i>${b == null ? fmt(a) + '+' : fmt(a) + ' – ' + fmt(b)}<span class="n">${n}</span></div>`;
         }).join('') + (nd ? `<div class="legend-row"><i style="background:var(--c-none)"></i>No data<span class="n">${nd}</span></div>` : '') +
-          `<p class="legend-note">${layer === 'density' ? 'People per km², five equal-count classes.' : 'Five equal-count classes, full GTFS timetable.'}</p>`;
+          `<p class="legend-note">${layer === 'density' ? 'People per km²' : "Bus departures per 1,000 residents across Translink's full timetable"}</p>`;
       }
     }
     panel.querySelectorAll('input[name="layer"]').forEach(r => r.addEventListener('change', () => { layer = r.value; shade(); }));
