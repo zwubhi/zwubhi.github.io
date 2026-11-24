@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subhitcha Senthilvel · Geospatial and data science</title>
+<meta name="description" content="Subhitcha Senthilvel, geospatial and data science graduate in Brisbane. Maps, machine learning and data pipelines, with an interactive map of Brisbane bus service equity.">
+<meta property="og:title" content="Subhitcha Senthilvel · Geospatial and data science">
+<meta property="og:description" content="Maps, machine learning and data pipelines. Explore my Brisbane bus service equity analysis as a live map.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="images/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f6f4ee">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23172045'/%3E%3Ccircle cx='16' cy='16' r='5' fill='none' stroke='%23ff6a3d' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Main">
+  <a class="nav-name" href="#top">Subhitcha Senthilvel</a>
+  <div class="nav-links">
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="basemap" role="group" aria-label="Colour theme">
+    <button type="button" data-theme-set="light" aria-pressed="true">Street</button>
+    <button type="button" data-theme-set="dark" aria-pressed="false">Satellite</button>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-text">
+    <p class="eyebrow mono">27.47°S 153.03°E · Brisbane</p>
+    <h1>Subhitcha Senthilvel</h1>
+    <p class="role">Geospatial and data science graduate</p>
+    <p class="intro">I turn spatial and tabular data into tools people use: drone imagery dashboards for plant scientists, workforce predictions for a health service, and this map, which scores every Brisbane suburb on its bus service.</p>
+    <div class="btns">
+      <a class="btn btn-main" href="#projects">See projects</a>
+      <a class="btn" href="mailto:subhi.s003@gmail.com">Email me</a>
+      <a class="btn btn-ghost" href="https://github.com/zwubhi">GitHub</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/zwubhi">LinkedIn</a>
+    </div>
+    <dl class="facts">
+      <div><dt>First-author paper</dt><dd>Int. J. of Information Technology, 2025</dd></div>
+      <div><dt>Patent filed</dt><dd>FALLERT fall-detection wearable</dd></div>
+      <div><dt>Master of Data Science</dt><dd>UQ, GPA 6.33 / 7</dd></div>
+    </dl>
+  </div>
+
+  <figure class="map" id="map" aria-label="Interactive map of Brisbane suburbs shaded by bus service">
+    <div class="map-canvas" id="map-canvas">
+      <img class="map-fallback" src="images/map-static.png" alt="Map of Brisbane SA2 suburbs shaded by bus service deficit category, with bus routes" width="1200" height="900">
+    </div>
+    <div class="map-grid" aria-hidden="true"></div>
+    <div class="map-coords mono" id="map-coords" aria-hidden="true">27.4700°S 153.0300°E</div>
+    <div class="map-north" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18"/><path d="M20 6 L26 26 L20 22 L14 26 Z"/><text x="20" y="38">N</text></svg></div>
+
+    <div class="map-panel" id="map-panel" hidden>
+      <div class="panel-head">
+        <span class="panel-title">Brisbane bus service</span>
+        <span class="mono panel-sub">230 suburbs (SA2)</span>
+      </div>
+      <label class="field">
+        <span>Find a suburb</span>
+        <input id="map-search" list="suburb-list" placeholder="e.g. Kangaroo Point" autocomplete="off">
+        <datalist id="suburb-list"></datalist>
+      </label>
+      <fieldset class="field">
+        <legend>Shade suburbs by</legend>
+        <label class="radio"><input type="radio" name="layer" value="category" checked> Service deficit</label>
+        <label class="radio"><input type="radio" name="layer" value="departures_per_1000"> Departures per 1,000 residents</label>
+        <label class="radio"><input type="radio" name="layer" value="density"> Population density</label>
+      </fieldset>
+      <div class="toggles">
+        <label class="check"><input type="checkbox" id="t-routes" checked> Bus routes</label>
+        <label class="check"><input type="checkbox" id="t-stops" checked> 20 busiest stops</label>
+      </div>
+      <div class="legend" id="map-legend" aria-live="polite"></div>
+    </div>
+
+    <div class="map-zoom" id="map-zoom" hidden>
+      <button type="button" data-zoom="in" aria-label="Zoom in">+</button>
+      <button type="button" data-zoom="out" aria-label="Zoom out">−</button>
+      <button type="button" data-zoom="reset" aria-label="Reset view">⤢</button>
+    </div>
+    <div class="map-scale mono" id="map-scale" aria-hidden="true"><span class="bar"></span><span class="lbl">5 km</span></div>
+    <div class="map-tip" id="map-tip" role="status" hidden></div>
+
+    <figcaption class="map-cap">
+      <strong>Live map:</strong> bus service deficit by suburb, from my <a href="#p-bus">Brisbane bus equity analysis</a>. Hover or tap a suburb.
+      <span class="src">Data: ABS 2025 population projections, Translink GTFS, Brisbane City Council stops.</span>
+    </figcaption>
+  </figure>
+</header>
+
+<!-- PROJECTS -->
+<section class="section" id="projects" aria-labelledby="projects-h">
+  <div class="sec-head">
+    <span class="grid-ref mono">A1</span>
+    <h2 id="projects-h">Projects, by location</h2>
+    <p class="sec-lede">Each project is pinned where the work happened. Scroll through them or click a pin. One of them is not on Earth.</p>
+  </div>
+
+  <div class="atlas">
+    <div class="globe-wrap">
+      <div class="globe-sticky">
+        <canvas id="globe" width="520" height="520" aria-label="Globe showing project locations" role="img"></canvas>
+        <div class="globe-label mono" id="globe-label" aria-live="polite">Drag to rotate</div>
+        <div class="globe-pins" id="globe-pins" role="group" aria-label="Jump to a project"></div>
+      </div>
+    </div>
+
+    <div class="projects">
+
+      <article class="project" id="p-paper" data-lat="27.02" data-lon="74.22" data-place="Rajasthan, India">
+        <p class="p-loc mono">27.0°N 74.2°E · Rajasthan, India</p>
+        <h3>Spatio-temporal modelling of climate impacts on crop yield</h3>
+        <p class="p-meta">Peer-reviewed paper · <em>International Journal of Information Technology</em> (Springer), October 2025 · First author</p>
+        <div class="model" aria-label="Model structure">
+          <div class="m-col">
+            <span class="m-box">Graph neural network<small>how neighbouring districts affect each other</small></span>
+            <span class="m-box">LSTM with attention<small>how conditions build up over the season</small></span>
+          </div>
+          <span class="m-arrow" aria-hidden="true"></span>
+          <span class="m-box m-key">Random-forest bagging<small>combines both into one yield estimate</small></span>
+        </div>
+        <p>I designed a hybrid model for agricultural and climate data from Rajasthan. A graph neural network captures the spatial links between districts, an LSTM with attention captures the timing within a season, and a random-forest bagging step combines their outputs.</p>
+        <p class="p-result"><span class="num mono">r = 0.68</span> correlation with observed yields, higher than the baseline spatio-temporal models compared in the paper. Also evaluated with MSE, MAE, RMSE and R².</p>
+        <!-- TODO: add the best baseline and its r, e.g. "against 0.5x for <model>" -->
+        <p class="p-limit">Limitation: the data covers one season (2018 to 2019), so the next step is testing across more years.</p>
+        <ul class="tags"><li>Graph neural networks</li><li>LSTM + attention</li><li>Ensembles</li></ul>
+        <a class="p-link" href="https://link.springer.com/article/10.1007/s41870-025-02715-6">Read the paper</a>
+      </article>
+
+      <article class="project" id="p-bus" data-lat="-27.47" data-lon="153.03" data-place="Brisbane, Australia">
+        <p class="p-loc mono">27.5°S 153.0°E · Brisbane</p>
+        <h3>Brisbane bus service equity</h3>
+        <p class="p-meta">Independent GIS project · QGIS · 2025</p>
+        <p>Which suburbs have plenty of residents but little bus service? I joined ABS 2025 population projections to SA1 and SA2 boundaries, rebuilt every route from Translink's GTFS feed, counted 2.88 million scheduled stop departures and aggregated them to suburbs with spatial joins. Totals matched across the stop, SA1 and SA2 layers.</p>
+        <p class="p-result"><span class="num mono">138 of 227</span> scored suburbs came out under-served. The top of the list mixes fast-growing fringe areas (Chambers Flat–Logan Reserve, Yarrabilba) with dense inner suburbs such as Kangaroo Point.</p>
+        <p class="p-limit">Next step: the current score mixes density and frequency on different scales, so I'm replacing it with departures per 1,000 residents ranked within density bands, which is easier to compare.</p>
+        <ul class="tags"><li>QGIS</li><li>GTFS</li><li>ABS SA1/SA2</li><li>Spatial joins</li></ul>
+        <div class="p-links"><a class="p-link" href="#map">Explore it on the map</a><a class="p-link" href="https://github.com/zwubhi/brisbane-bus-service-deficit">Code and data on GitHub</a></div>
+      </article>
+
+      <article class="project" id="p-fake" data-lat="-27.50" data-lon="153.01" data-place="The University of Queensland">
+        <p class="p-loc mono">27.5°S 153.0°E · UQ St Lucia</p>
+        <h3>Fake news detection that holds up under attack</h3>
+        <p class="p-meta">Master's capstone · The University of Queensland · 2026</p>
+        <p>A detector that reads both a post's title and its image, tested against posts deliberately manipulated to fool it. BERT encodes the title, ViT encodes the image and CLIP scores how well they match. I generated 9,697 adversarial posts with Qwen2.5 and Stable Diffusion, then retrained on clean and adversarial posts with a ViT modified to focus on reliable image regions. Data: Fakeddit, cleaned to posts with valid images.</p>
+        <div class="bars" aria-label="F1 score before and after adversarial training">
+          <div class="bar-row"><span>Manipulated posts</span><span class="bar-track"><i style="--a:.68;--b:.71"></i></span><span class="mono">0.68 → 0.71</span></div>
+          <div class="bar-row"><span>Clean posts</span><span class="bar-track"><i style="--a:.80;--b:.82"></i></span><span class="mono">0.80 → 0.82</span></div>
+        </div>
+        <p class="p-limit">The gains were not statistically significant on the small test sets, so a larger evaluation comes next. The clearer finding: detectors tested only on clean posts overstate how accurate they are.</p>
+        <ul class="tags"><li>PyTorch</li><li>Hugging Face</li><li>BERT · ViT · CLIP</li><li>Generative AI</li></ul>
+      </article>
+
+      <article class="project" id="p-fall" data-lat="12.84" data-lon="80.15" data-place="Chennai, India">
+        <p class="p-loc mono">12.8°N 80.2°E · Chennai, India</p>
+        <h3>FALLERT: fall detection for older people living alone</h3>
+        <p class="p-meta">IoT wearable · Vellore Institute of Technology · Patent filed</p>
+        <p>Single-sensor fall alarms go off when someone sits down quickly. FALLERT is worn at the waist and combines an accelerometer, gyroscope, barometer and heart-rate sensor to tell a real fall from everyday movement and estimate how hard the impact was. A NodeMCU (ESP8266) with a SIM800 module sends Wi-Fi and SMS alerts to carers.</p>
+        <p class="p-result"><span class="num mono">Patent filed</span> for the working prototype.</p>
+        <ul class="tags"><li>IoT</li><li>Sensor fusion</li><li>ESP8266</li><li>Real-time alerts</li></ul>
+      </article>
+
+      <article class="project" id="p-moon" data-moon="1" data-lat="0" data-lon="0" data-place="The Moon">
+        <p class="p-loc mono">Off-planet · The Moon</p>
+        <h3>Finding craters on the Moon</h3>
+        <p class="p-meta">Team project · Vellore Institute of Technology · 2022</p>
+        <p>We labelled 29 lunar surface images by hand, cleaned them with OpenCV sharpening and noise filters, and fine-tuned a pretrained YOLOv5 detector for a single crater class over 150 epochs.</p>
+        <p class="p-result"><span class="num mono">0.56 mAP</span> on the validation images.</p>
+        <p class="p-limit">With only 29 images this is a proof of concept. The same workflow is what I now use for counting sorghum heads in drone imagery.</p>
+        <ul class="tags"><li>YOLOv5</li><li>OpenCV</li><li>Object detection</li></ul>
+        <a class="p-link" href="https://github.com/zwubhi/moon-craters-detection">View on GitHub</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="section" id="experience" aria-labelledby="exp-h">
+  <div class="sec-head">
+    <span class="grid-ref mono">B2</span>
+    <h2 id="exp-h">Experience, as a transit line</h2>
+    <p class="sec-lede">From Chennai to Brisbane. The newest stops are at the top.</p>
+  </div>
+
+  <ol class="line" id="line">
+    <li class="stop interchange" data-city="now">
+      <div class="stop-label mono"><span class="pill">Interchange</span> Now · 3 roles</div>
+
+      <article class="job" id="j-appn" data-skills="geo eng ml">
+        <h3>Associate Research Assistant</h3>
+        <p class="job-org"><a href="https://www.linkedin.com/company/australian-plant-phenomics-facility/">Australian Plant Phenomics Network</a>, The University of Queensland</p>
+        <p class="job-when mono">Sep 2026 – now · Brisbane</p>
+        <ul>
+          <li>Built a geospatial dashboard for viewing plot-level drone imagery and vegetation indices without GIS software.</li>
+          <li>Built a browser-based plot designer that exports GIS-ready trial layouts in each project's coordinate system.</li>
+          <li>Replaced manual downloads from the Hiphen Cloverfield API with scheduled ingestion into the research data repository.</li>
+          <li>Turned a YOLO11 sorghum head-count model into a no-code web app, with a step for annotating missed detections.</li>
+        </ul>
+        <p class="job-tech mono">Python · PyQGIS · geopandas · rasterio · JavaScript · FastAPI · ARDC Nectar</p>
+      </article>
+
+      <article class="job" id="j-gchhs" data-skills="ml eng bi">
+        <h3>Data and Reporting Intern</h3>
+        <p class="job-org"><a href="https://www.linkedin.com/company/gold-coast-hospital-and-health-service/">Gold Coast Hospital and Health Service</a>, Workforce Data Analysis and Reporting</p>
+        <p class="job-when mono">Sep 2026 – now · Gold Coast</p>
+        <ul>
+          <li>Modelling 800,000+ workforce records for 1,200+ staff to understand who changes role and why.</li>
+          <li>LightGBM models predict a move of role, position, department or facility within 12 months (ROC-AUC 0.76) and exits (0.72), explained with SHAP.</li>
+          <li>Built a scheduled Microsoft Fabric pipeline that refreshes the predictions for workforce planning.</li>
+          <li>Automated the fortnightly Emergent Leave compliance review with Power Automate and Office Scripts.</li>
+        </ul>
+        <p class="job-tech mono">Microsoft Fabric · Python · LightGBM · SHAP · Power Query · Power Automate</p>
+      </article>
+
+      <article class="job" id="j-mercor" data-skills="">
+        <h3>Generalist Expert (freelance)</h3>
+        <p class="job-org">Mercor</p>
+        <p class="job-when mono">Aug 2026 – now · Remote</p>
+        <ul><li>Review and score AI-generated business documents (100+ so far) and write feedback used to train the models.</li></ul>
+      </article>
+    </li>
+
+    <li class="stop" data-city="brisbane">
+      <div class="stop-label mono">Jan – Mar 2026 · Brisbane</div>
+      <article class="job" id="j-aemo" data-skills="bi eng">
+        <h3>Stakeholder Engagement Intern</h3>
+        <p class="job-org"><a href="https://www.linkedin.com/company/australian-energy-market-operator/">Australian Energy Market Operator</a>, Policy and Corporate Affairs</p>
+        <ul>
+          <li>Cleaned and de-duplicated 100,000+ stakeholder records across several sources in Microsoft Dynamics, guided by a job-persona taxonomy and domain-to-organisation mapping I built.</li>
+          <li>Automated logging of stakeholder requests from a shared mailbox with Power Automate, and built a Power BI events calendar from SharePoint.</li>
+        </ul>
+        <p class="job-tech mono">Excel · Power Query · Power BI · Microsoft Dynamics · Power Automate · SharePoint</p>
+      </article>
+    </li>
+
+    <li class="stop" data-city="goldcoast">
+      <div class="stop-label mono">Dec 2025 – Jan 2026 · Gold Coast</div>
+      <article class="job" id="j-chatstat" data-skills="bi">
+        <h3>UX Research Intern</h3>
+        <p class="job-org"><a href="https://www.linkedin.com/company/chatstat/">Chatstat</a>, parental control platform</p>
+        <ul><li>Ran usability testing sessions with parents and analysed behaviour data to find usability problems in the app.</li></ul>
+      </article>
+    </li>
+
+    <li class="stop transfer" data-city="move">
+      <div class="stop-label mono"><span class="pill">Transfer</span> 2025 · Chennai → Brisbane</div>
+      <p class="transfer-note">Moved to Brisbane to start the Master of Data Science at The University of Queensland.</p>
+    </li>
+
+    <li class="stop" data-city="chennai">
+      <div class="stop-label mono">Jun – Jul 2023 · Chennai</div>
+      <article class="job" id="j-bhive" data-skills="bi">
+        <h3>Data Analyst Intern</h3>
+        <p class="job-org">Bhive Technologies</p>
+        <ul><li>Collected and cleaned data from 50+ external sources with Excel and SQL, and built Power BI and Tableau dashboards for business reporting.</li></ul>
+      </article>
+    </li>
+
+    <li class="stop terminus" data-city="chennai">
+      <div class="stop-label mono"><span class="pill">Start</span> 2020 · Chennai</div>
+      <p class="transfer-note">Integrated Master of Technology in Software Engineering at Vellore Institute of Technology.</p>
+    </li>
+  </ol>
+  <p class="aside">Alongside study I've also worked part time at 7-Eleven and Plus Value Property Group.</p>
+</section>
+
+<!-- SKILLS -->
+<section class="section" id="skills" aria-labelledby="skills-h">
+  <div class="sec-head">
+    <span class="grid-ref mono">C3</span>
+    <h2 id="skills-h">Skills, as map layers</h2>
+    <p class="sec-lede">Turn layers on to see where each set of skills was used.</p>
+  </div>
+  <div class="layers">
+    <fieldset class="layer-panel">
+      <legend class="mono">Layers</legend>
+      <label class="layer" style="--c:var(--l-geo)"><input type="checkbox" value="geo" checked><span class="sw"></span><span><b>Geospatial</b><small>QGIS, PyQGIS, geopandas, rasterio, Leaflet, GTFS, ABS SA1/SA2, orthomosaics, raster and vector data</small></span></label>
+      <label class="layer" style="--c:var(--l-ml)"><input type="checkbox" value="ml"><span class="sw"></span><span><b>Machine learning</b><small>Python, pandas, scikit-learn, LightGBM, PyTorch, Hugging Face, SHAP, YOLO, OpenCV, spatio-temporal models</small></span></label>
+      <label class="layer" style="--c:var(--l-eng)"><input type="checkbox" value="eng"><span class="sw"></span><span><b>Data engineering and automation</b><small>SQL, Microsoft Fabric, FastAPI, Power Automate, Office Scripts, Git, AWS EC2, ARDC Nectar</small></span></label>
+      <label class="layer" style="--c:var(--l-bi)"><input type="checkbox" value="bi"><span class="sw"></span><span><b>Business intelligence</b><small>Power BI, Tableau, Excel, Power Query, SharePoint, Microsoft Dynamics</small></span></label>
+    </fieldset>
+    <ul class="features" id="features">
+      <li data-skills="geo eng ml"><a href="#j-appn"><span class="ft mono">Role</span>Drone imagery dashboard and plot designer<span class="dots"></span></a></li>
+      <li data-skills="geo"><a href="#p-bus"><span class="ft mono">Project</span>Brisbane bus service equity<span class="dots"></span></a></li>
+      <li data-skills="ml eng bi"><a href="#j-gchhs"><span class="ft mono">Role</span>Workforce mobility prediction<span class="dots"></span></a></li>
+      <li data-skills="ml geo"><a href="#p-paper"><span class="ft mono">Project</span>Climate and crop yield paper<span class="dots"></span></a></li>
+      <li data-skills="ml"><a href="#p-fake"><span class="ft mono">Project</span>Robust fake news detection<span class="dots"></span></a></li>
+      <li data-skills="ml geo"><a href="#p-moon"><span class="ft mono">Project</span>Moon crater detection<span class="dots"></span></a></li>
+      <li data-skills="eng"><a href="#p-fall"><span class="ft mono">Project</span>FALLERT wearable<span class="dots"></span></a></li>
+      <li data-skills="bi eng"><a href="#j-aemo"><span class="ft mono">Role</span>Stakeholder data clean-up at AEMO<span class="dots"></span></a></li>
+      <li data-skills="bi"><a href="#j-bhive"><span class="ft mono">Role</span>Reporting dashboards at Bhive<span class="dots"></span></a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="section" id="education" aria-labelledby="edu-h">
+  <div class="sec-head">
+    <span class="grid-ref mono">D4</span>
+    <h2 id="edu-h">Education</h2>
+  </div>
+  <div class="edu">
+    <article>
+      <p class="mono edu-when">2025 – 2026 · Brisbane</p>
+      <h3>Master of Data Science</h3>
+      <p class="edu-inst">The University of Queensland</p>
+      <p class="edu-gpa mono">GPA 6.33 / 7</p>
+      <ul>
+        <li>Dean's Commendation for Academic Excellence (6.75 / 7, Semester 1 2026)</li>
+        <li>UQ High Achievers Award, 25% merit scholarship</li>
+        <li>Excellence in Business Communication Skills award for the capstone</li>
+      </ul>
+    </article>
+    <article>
+      <p class="mono edu-when">2020 – 2025 · Chennai</p>
+      <h3>Integrated Master of Technology, Software Engineering</h3>
+      <p class="edu-inst">Vellore Institute of Technology</p>
+      <p class="edu-gpa mono">GPA 9.09 / 10</p>
+      <ul>
+        <li>Meritorious Award, top 7% of the cohort in all five years</li>
+        <li>Content Head, Data Science Club</li>
+      </ul>
+    </article>
+  </div>
+  <p class="aside">Founding charter member of Brisbane North Multicultural Toastmasters. Volunteer with <a href="https://www.linkedin.com/company/mndqld/">MND Queensland</a> and UQ Union.</p>
+</section>
+
+</main>
+
+<!-- CONTACT -->
+<footer class="footer" id="contact">
+  <div class="footer-in">
+    <div>
+      <span class="grid-ref mono">E5</span>
+      <h2>Let's talk</h2>
+      <p>I'm looking for graduate geospatial and data science roles in Brisbane, especially in transport and urban planning. Happy to walk through any of the work above.</p>
+      <a class="btn btn-main" href="mailto:subhi.s003@gmail.com">subhi.s003@gmail.com</a>
+    </div>
+    <dl class="contact">
+      <div><dt>Email</dt><dd><a href="mailto:subhi.s003@gmail.com">subhi.s003@gmail.com</a></dd></div>
+      <div><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/zwubhi">linkedin.com/in/zwubhi</a></dd></div>
+      <div><dt>GitHub</dt><dd><a href="https://github.com/zwubhi">github.com/zwubhi</a></dd></div>
+      <div><dt>Based in</dt><dd>Brisbane, Queensland</dd></div>
+    </dl>
+  </div>
+  <p class="colophon mono">Hand-built with plain HTML, CSS and JavaScript. No map libraries: the maps are drawn from GeoJSON in the browser.</p>
+</footer>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>
