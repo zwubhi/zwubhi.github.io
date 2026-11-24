@@ -47,7 +47,7 @@
   Promise.all([
     getJSON('data/brisbane_deficit.geojson'),
     getJSON('data/bus_routes.geojson').catch(() => null),
-    getJSON('data/busiest_stops.geojson').catch(() => null)
+    null // bus stops are not shown
   ]).then(([sa2, routes, stops]) => initMap(sa2, routes, stops))
     .catch(err => { console.warn('Map data not loaded:', err); });
 
@@ -118,11 +118,12 @@
 
     /* --- view transform --- */
     let W = 0, H = 0, s = 1, tx = 0, ty = 0, base = 1;
+    const PANEL_R = 284; // space kept clear for the control panel (its width plus margins)
     const isNarrow = () => innerWidth <= 640;
     function fit(box, pad = 0.9) {
       const [x0, y0, x1, y1] = box;
       // keep clear of the floating panel on wide screens
-      const reserveR = !isNarrow() && W > 700 ? 320 : 0;
+      const reserveR = !isNarrow() && W > 700 ? PANEL_R : 0;
       const reserveB = isNarrow() ? 0 : 70;
       const aw = W - reserveR, ah = H - reserveB;
       const sc = Math.min(aw / (x1 - x0), ah / (y1 - y0)) * pad;
@@ -175,8 +176,13 @@
       const nice = [250, 500, 1000, 2000, 5000, 10000, 20000, 50000];
       let len = nice[0];
       for (const n of nice) if (n <= target) len = n;
-      scaleEl.querySelector('.bar').style.width = (len / mPerPx).toFixed(0) + 'px';
-      scaleEl.querySelector('.lbl').textContent = len >= 1000 ? (len / 1000) + ' km' : len + ' m';
+      const px = len / mPerPx; // true on-screen length of `len` metres at this zoom
+      scaleEl.querySelector('.bar').style.width = px.toFixed(1) + 'px';
+      scaleEl.querySelector('.ticks').style.width = px.toFixed(1) + 'px';
+      const km = len >= 1000, v = km ? len / 1000 : len;
+      scaleEl.querySelector('.t1').textContent = String(v / 2);
+      scaleEl.querySelector('.t2').textContent = String(v);
+      scaleEl.querySelector('.unit').textContent = km ? 'km' : 'm';
     }
 
     /* --- interaction: pan, zoom --- */
@@ -236,7 +242,7 @@
     zoomBox.addEventListener('click', e => {
       const b = e.target.closest('button'); if (!b) return;
       if (b.dataset.zoom === 'reset') { const f = fit(core); animateTo(f.s, f.tx, f.ty); clearSel(); return; }
-      const cx = (!isNarrow() && W > 700 ? W - 320 : W) / 2;
+      const cx = (!isNarrow() && W > 700 ? W - PANEL_R : W) / 2;
       zoomAt(b.dataset.zoom === 'in' ? 1.6 : 1 / 1.6, cx, H / 2, true);
     });
 
@@ -253,24 +259,21 @@
         subs.forEach(d => { const c = d.props.category || 'No data'; counts[c] = (counts[c] || 0) + 1; d.el.style.fill = `var(${CAT[c] || '--c-none'})`; });
         legendEl.innerHTML = ['Under-served', 'Balanced', 'Well-served', 'No data'].filter(c => counts[c]).map(c =>
           `<div class="legend-row"><i style="background:var(${CAT[c]})"></i>${c}<span class="n">${counts[c]}</span></div>`).join('') +
-          `<p class="legend-note">Deficit = density-based demand minus departures-based supply, from my QGIS analysis. "Balanced" means a score that rounds to zero.</p>`;
+          `<p class="legend-note">Deficit = demand (density) − supply (departures). Balanced: score rounds to 0.</p>`;
       } else {
         const br = quantiles(layer);
         const cls = v => v == null ? -1 : br.findIndex(b => v <= b) === -1 ? 4 : br.findIndex(b => v <= b);
         const counts = [0, 0, 0, 0, 0]; let nd = 0;
         subs.forEach(d => { const c = cls(d.props[layer]); if (c < 0) { nd++; d.el.style.fill = 'var(--c-none)'; } else { counts[c]++; d.el.style.fill = `var(--r${c + 1})`; } });
         const lo = [subs.reduce((m, d) => d.props[layer] != null ? Math.min(m, d.props[layer]) : m, Infinity), ...br];
-        const unit = layer === 'density' ? 'People per km²' : 'Departures per 1,000 residents';
         legendEl.innerHTML = counts.map((n, i) => {
           const a = Math.round(lo[i]), b = i < 4 ? Math.round(br[i]) : null;
           return `<div class="legend-row"><i style="background:var(--r${i + 1})"></i>${b == null ? fmt(a) + '+' : fmt(a) + ' – ' + fmt(b)}<span class="n">${n}</span></div>`;
         }).join('') + (nd ? `<div class="legend-row"><i style="background:var(--c-none)"></i>No data<span class="n">${nd}</span></div>` : '') +
-          `<p class="legend-note">${unit}, in five equal-count classes.${layer === 'departures_per_1000' ? ' Departures are counted across the whole GTFS timetable.' : ''}</p>`;
+          `<p class="legend-note">${layer === 'density' ? 'People per km², five equal-count classes.' : 'Five equal-count classes, full GTFS timetable.'}</p>`;
       }
     }
     panel.querySelectorAll('input[name="layer"]').forEach(r => r.addEventListener('change', () => { layer = r.value; shade(); }));
-    document.getElementById('t-routes').addEventListener('change', e => { gRoutes.style.display = e.target.checked ? '' : 'none'; });
-    document.getElementById('t-stops').addEventListener('change', e => { gStops.style.display = e.target.checked ? '' : 'none'; });
     shade();
 
     /* --- tooltip / selection --- */
@@ -321,11 +324,14 @@
     }
     svg.addEventListener('click', e => {
       if (moved) { moved = false; return; }
-      const d = e.target.__sub;
+      const hit = document.elementFromPoint(e.clientX, e.clientY); // the map captures the pointer, so find the suburb under the cursor
+      const d = hit && hit.__sub;
       if (!d || d === selected) { clearSel(); if (hovered && e.pointerType === 'mouse') hoverAt(e); return; }
-      const p = pt(e); select(d, p[0], p[1]);
+      flyTo(d);
     });
     svg.addEventListener('mouseleave', () => { if (hovered) hovered.el.classList.remove('hl'); hovered = null; });
+    fig.addEventListener('mouseleave', () => { if (hovered) hovered.el.classList.remove('hl'); hovered = null; hideTip(); });
+    fig.addEventListener('mouseenter', () => { if (selected && tip.hidden) select(selected); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') clearSel(); });
 
     /* --- search --- */
@@ -335,15 +341,24 @@
     function goTo(name) {
       const d = subs.find(x => x.props.name.toLowerCase() === name.trim().toLowerCase());
       if (!d) return false;
+      flyTo(d);
+      return true;
+    }
+    function flyTo(d) {
       const f = fit(d.box, .5);
       const ns = Math.min(f.s, base * 5);
       const [x0, y0, x1, y1] = d.box;
-      const aw = (!isNarrow() && W > 700) ? W - 320 : W;
+      const aw = (!isNarrow() && W > 700) ? W - PANEL_R : W;
       const ntx = aw / 2 - ns * (x0 + x1) / 2, nty = (H - (isNarrow() ? 0 : 70)) / 2 - ns * (y0 + y1) / 2;
       animateTo(ns, ntx, nty);
       setTimeout(() => select(d), reduceMotion ? 0 : 680);
-      return true;
     }
+    const isName = v => subs.some(x => x.props.name.toLowerCase() === v.trim().toLowerCase());
+    function clearForNew() { // after a pick, clicking the box empties it so the full list shows again
+      if (search.value && isName(search.value)) { search.placeholder = search.value; search.value = ''; }
+    }
+    search.addEventListener('pointerdown', clearForNew);
+    search.addEventListener('focus', clearForNew);
     search.addEventListener('change', () => goTo(search.value));
     search.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); goTo(search.value); } });
   }

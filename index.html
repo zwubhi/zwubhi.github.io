@@ -68,8 +68,7 @@
 
     <div class="map-panel" id="map-panel" hidden>
       <div class="panel-head">
-        <span class="panel-title">Brisbane bus service</span>
-        <span class="mono panel-sub">230 suburbs (SA2)</span>
+        <span class="panel-title">Brisbane Bus Service Analysis (SA2 level)</span>
       </div>
       <label class="field">
         <span>Find a suburb</span>
@@ -82,10 +81,6 @@
         <label class="radio"><input type="radio" name="layer" value="departures_per_1000"> Departures per 1,000 residents</label>
         <label class="radio"><input type="radio" name="layer" value="density"> Population density</label>
       </fieldset>
-      <div class="toggles">
-        <label class="check"><input type="checkbox" id="t-routes" checked> Bus routes</label>
-        <label class="check"><input type="checkbox" id="t-stops" checked> 20 busiest stops</label>
-      </div>
       <div class="legend" id="map-legend" aria-live="polite"></div>
     </div>
 
@@ -94,12 +89,12 @@
       <button type="button" data-zoom="out" aria-label="Zoom out">−</button>
       <button type="button" data-zoom="reset" aria-label="Reset view">⤢</button>
     </div>
-    <div class="map-scale mono" id="map-scale" aria-hidden="true"><span class="bar"></span><span class="lbl">5 km</span></div>
+    <div class="map-scale mono" id="map-scale" aria-hidden="true"><span class="bar"></span><span class="unit">km</span><span class="ticks"><span class="t0">0</span><span class="t1">2.5</span><span class="t2">5</span></span></div>
     <div class="map-tip" id="map-tip" role="status" hidden></div>
 
     <figcaption class="map-cap">
       <strong>Live map:</strong> bus service deficit by suburb, from my <a href="#p-bus">Brisbane bus equity analysis</a>. Hover or tap a suburb.
-      <span class="src">Data: ABS 2025 population projections, Translink GTFS, Brisbane City Council stops.</span>
+      <span class="src">Data used: ABS 2025 population projections, Translink GTFS, Brisbane City Council stops.</span>
     </figcaption>
   </figure>
 </header>
