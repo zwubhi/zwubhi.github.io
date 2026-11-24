@@ -149,15 +149,15 @@
       </article>
 
       <article class="project" id="p-fake" data-lat="-27.50" data-lon="153.01" data-place="The University of Queensland">
-        <p class="p-loc mono">27.5°S 153.0°E · UQ St Lucia</p>
+        <p class="p-loc mono">27.5°S 153.0°E · UQ, St Lucia</p>
         <h3>Adversarial fake news detection</h3>
         <p class="p-meta">Master's capstone project</p>
-        <p>I built a detector that reads both a post's title and its image. BERT encodes the title, ViT encodes the image and CLIP scores how well they match. I generated 9,697 adversarial posts with Qwen2.5 and Stable Diffusion, then retrained the model on clean and adversarial posts using the Fakeddit dataset.</p>
+        <p>I built a detector that reads both a post's title and its image. BERT encodes the title, ViT encodes the image and CLIP measures how similar they are. I generated 9,697 adversarial posts with Qwen2.5 and Stable Diffusion, then retrained the model on clean and adversarial posts using the Fakeddit dataset.</p>
         <div class="bars" aria-label="F1 score before and after adversarial training">
           <div class="bar-row"><span>Manipulated posts</span><span class="bar-track"><i style="--a:.68;--b:.71"></i></span><span class="mono">0.68 → 0.71</span></div>
           <div class="bar-row"><span>Clean posts</span><span class="bar-track"><i style="--a:.80;--b:.82"></i></span><span class="mono">0.80 → 0.82</span></div>
         </div>
-        <p class="p-limit">Limitation: the model was tested on a single Reddit-based dataset with small test sets, so results may not carry over to other platforms.</p>
+        <p class="p-limit">Result: adversarial training improved robustness, raising F1 on manipulated posts from 0.68 to 0.71.</p>
         <ul class="tags"><li>PyTorch</li><li>Hugging Face</li><li>BERT</li><li>ViT</li><li>CLIP</li><li>Generative AI</li></ul>
       </article>
 
@@ -165,7 +165,7 @@
         <p class="p-loc mono">12.8°N 80.2°E · Chennai, India</p>
         <h3>Elderly fall detection system</h3>
         <p class="p-meta">IoT wearable project</p>
-        <p>FALLERT is worn at the waist and combines an accelerometer, gyroscope, barometer and heart-rate sensor to tell a real fall from everyday movement and estimate how hard the impact was. A NodeMCU (ESP8266) with a SIM800 module sends Wi-Fi and SMS alerts to carers.</p>
+        <p>FALLERT is worn as a waistband. It combines an accelerometer, gyroscope, barometer and heart-rate sensor to detect a fall from everyday movement and estimate the impact. A NodeMCU (ESP8266) with a SIM800 module sends Wi-Fi and SMS alerts to carers.</p>
         <p class="p-result"><span class="num mono">Patent filed</span> for the working prototype.</p>
         <p class="p-limit">Impact: carers are alerted automatically by Wi-Fi and SMS, so an older person living alone can get help without having to call for it.</p>
         <ul class="tags"><li>Accelerometer</li><li>Gyroscope</li><li>Barometer</li><li>Heart-rate sensor</li></ul>
@@ -174,22 +174,21 @@
       <article class="project" id="p-chatbot" data-lat="12.84" data-lon="80.15" data-place="Chennai, India">
         <p class="p-loc mono">12.8°N 80.2°E · Chennai, India</p>
         <h3>AI chatbot for government services</h3>
-        <p>I developed a GPT-3.5-powered chatbot that makes Indian government services easier to access, using NLP-based query handling.</p>
-        <ul class="tags"><li>Python</li><li>GPT-3.5</li><li>NLP</li></ul>
+        <p>I indexed official government documents with FAISS to retrieve the most relevant sections for each question, then used GPT-3.5 through the OpenAI API to generate answers from them, a retrieval-augmented generation (RAG) approach.</p>
+        <ul class="tags"><li>Python</li><li>OpenAI API</li><li>GPT-3.5</li><li>FAISS</li><li>RAG</li></ul>
       </article>
 
       <article class="project" id="p-cloud" data-lat="12.84" data-lon="80.15" data-place="Chennai, India">
         <p class="p-loc mono">12.8°N 80.2°E · Chennai, India</p>
         <h3>Secure cloud file storage</h3>
-        <p>I built AES-encrypted file storage on AWS that keeps data private end to end and retrieves it securely in a single-cloud environment.</p>
-        <ul class="tags"><li>AWS</li><li>AES encryption</li></ul>
+        <p>I built secure cloud file storage on an AWS EC2 instance, encrypting files with AES before upload and transferring them over SFTP with FileZilla, so data stays private both in transit and at rest.</p>
+        <ul class="tags"><li>AWS EC2</li><li>AES encryption</li><li>FileZilla</li><li>SFTP</li></ul>
       </article>
 
       <article class="project" id="p-moon" data-moon="1" data-lat="0" data-lon="0" data-place="The Moon">
-        <p class="p-loc mono">The Moon</p>
+        <p class="p-loc mono">To the moon and back</p>
         <h3>Moon craters detection</h3>
-        <p class="p-meta">Team project</p>
-        <p>We labelled 29 lunar surface images manually, cleaned them with OpenCV sharpening and noise filters, and fine-tuned a pretrained YOLOv5 detector for a single crater class.</p>
+        <p>Labelled 29 lunar surface images manually, cleaned them with OpenCV sharpening and noise filters, and fine-tuned a pretrained YOLOv5 detector for a single crater class.</p>
         <p class="p-result"><span class="num mono">0.56 mAP</span> on the validation images.</p>
         <p class="p-limit">With only 29 images this is a proof of concept.</p>
         <ul class="tags"><li>YOLOv5</li><li>OpenCV</li><li>Object detection</li></ul>
