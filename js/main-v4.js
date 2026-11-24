@@ -773,7 +773,7 @@
     let hopState = 'waiting'; // waiting, tapped, gone
     function hopTap() {
       if (hopState !== 'waiting') return;
-      hopState = 'tapped'; hop.textContent = "Let's go! Scroll down";
+      hopState = 'tapped'; hop.textContent = "Let's go!";
       const svg = train.querySelector('svg'); svg.classList.remove('wave'); void svg.offsetWidth; svg.classList.add('wave');
       setTimeout(() => { hop.classList.add('fade'); setTimeout(() => { hopState = 'gone'; hop.hidden = true; }, reduceMotion ? 0 : 600); }, 1800);
     }
