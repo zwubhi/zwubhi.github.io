@@ -103,7 +103,7 @@
 <section class="section" id="projects" aria-labelledby="projects-h">
   <div class="sec-head">
     <h2 id="projects-h">Projects around the world</h2>
-    <p class="sec-lede">Each project is pinned where the work happened. Scroll through them or click a pin. The last one is off the map ;)</p>
+    <p class="sec-lede">Each project is pinned where the work happened. Scroll through them or click a pin. The last one is off the map!</p>
   </div>
 
   <div class="atlas">
@@ -124,16 +124,15 @@
         <div class="model" aria-label="Model structure">
           <div class="m-col">
             <span class="m-box">Graph neural network<small>how neighbouring districts affect each other</small></span>
-            <span class="m-box">LSTM with attention</span>
+            <span class="m-box">LSTM with attention<small>how weather through the season shapes yield</small></span>
           </div>
           <span class="m-arrow" aria-hidden="true"></span>
-          <span class="m-box m-key">Random-forest bagging<small>combines their predictions into one yield estimate</small></span>
+          <span class="m-box m-key">Random-forest bagging<small>combines predictions into one yield estimate</small></span>
         </div>
-        <p>I designed a hybrid model for agricultural and climate data from Rajasthan. A graph neural network captures the spatial links between districts, an LSTM with attention models change over the season, and a random-forest bagging step combines their outputs.</p>
+        <p>I designed a hybrid model for agricultural and climate data from Rajasthan. A graph neural network captures the spatial links between districts, an LSTM with attention models change over the season, and random-forest bagging combines their outputs.</p>
         <p class="p-result"><span class="num mono">r = 0.68</span> correlation with observed yields, higher than the baseline spatio-temporal models compared in the paper.</p>
         <!-- TODO: add the best baseline and its r, e.g. "against 0.5x for <model>" -->
         <p class="p-limit">Limitation: the model was trained and tested on a single season (2018 to 2019) from one state, so it may not hold for other years or regions.</p>
-        <p class="tags-head">Tools and frameworks used</p>
         <ul class="tags"><li>Python</li><li>PyTorch</li><li>scikit-learn</li></ul>
         <a class="p-link" href="https://link.springer.com/article/10.1007/s41870-025-02715-6" target="_blank" rel="noopener">Read the paper</a>
       </article>
@@ -142,12 +141,11 @@
         <p class="p-loc mono">27.5°S 153.0°E · Brisbane, Australia</p>
         <h3>Brisbane bus service equity analysis</h3>
         <p class="p-meta">Independent QGIS project</p>
-        <p>This project identifies Brisbane suburbs with large populations but limited bus service.</p>
         <p>I joined ABS 2025 population projections to SA1 and SA2 boundaries, rebuilt every route from Translink's GTFS feed, processed 2.88 million scheduled stop departures and aggregated them to suburbs with spatial joins.</p>
-        <p class="p-result"><span class="num mono">138 of 227</span> The most under-served areas include fast-growing outer suburbs, Chambers Flat–Logan Reserve and Yarrabilba, and dense inner suburbs, Kangaroo Point.</p>
-        <p class="p-limit">Future work: add real-time vehicle data (GTFS-Realtime) to measure the service buses actually deliver, not just what the timetable promises.</p>
+        <p class="p-result"><span class="num mono">138 of 227</span> suburbs are under-served. The most under-served include fast-growing outer suburbs, Chambers Flat–Logan Reserve and Yarrabilba, and dense inner suburbs such as Kangaroo Point.</p>
+        <p class="p-limit">Future work: add ABS car ownership data to flag suburbs where few households have a car and buses are critical.</p>
         <ul class="tags"><li>QGIS</li><li>GTFS</li><li>ABS SA1/SA2</li><li>Spatial joins</li></ul>
-        <div class="p-links"><a class="p-link" href="#map">Explore it on the map</a><a class="p-link" href="https://github.com/zwubhi/brisbane-bus-service-deficit" target="_blank" rel="noopener">View the code and data on GitHub</a></div>
+        <div class="p-links"><a class="p-link" href="#map">Explore it on the map</a><a class="p-link" href="https://github.com/zwubhi/brisbane-bus-service-deficit" target="_blank" rel="noopener">View on GitHub</a></div>
       </article>
 
       <article class="project" id="p-fake" data-lat="-27.50" data-lon="153.01" data-place="The University of Queensland">
@@ -205,13 +203,13 @@
 <!-- EXPERIENCE -->
 <section class="section" id="experience" aria-labelledby="exp-h">
   <div class="sec-head">
-    <h2 id="exp-h">Experience, as a transit line</h2>
+    <h2 id="exp-h">Experience as a transit line</h2>
   </div>
 
   <ol class="line" id="line">
     <li class="stop terminus" data-city="home">
       <div class="stop-label mono">2003</div>
-      <p class="transfer-note">Born in a rural area.</p>
+      <p class="transfer-note">Born in a small town in Tamil Nadu.</p>
     </li>
 
     <li class="stop" data-city="chennai">
@@ -233,32 +231,32 @@
     </li>
 
     <li class="stop" data-city="chennai">
-      <div class="stop-label mono">Jun – Jul 2023</div>
+      <div class="stop-label mono">Jun 2023 – Jul 2023</div>
       <article class="job" id="j-bhive" data-skills="bi">
         <h3>Data Analyst Intern</h3>
-        <p class="job-org">Bhive Technologies, Chennai, India</p>
+        <p class="job-org"><a href="https://www.linkedin.com/company/bhive-technologies/" target="_blank" rel="noopener">Bhive Technologies</a>, Chennai, India</p>
         <ul><li>Collected and cleaned data from 50+ external sources with Excel and SQL, and built Power BI and Tableau dashboards for business reporting.</li></ul>
       </article>
     </li>
 
     <li class="stop transfer" data-city="move">
       <div class="stop-label mono">2025</div>
-      <p class="transfer-note">Moved to Brisbane to chase a dream: the Master of Data Science at The University of Queensland.</p>
+      <p class="transfer-note">Moved to Brisbane to chase a dream! Started the Master of Data Science at The University of Queensland.</p>
     </li>
 
     <li class="stop" data-city="goldcoast">
       <div class="stop-label mono">Dec 2025 – Jan 2026</div>
       <article class="job" id="j-chatstat" data-skills="bi">
-        <h3>UX Research Intern</h3>
+        <h3>Product Analyst Intern</h3>
         <p class="job-org"><a href="https://www.linkedin.com/company/chatstat/" target="_blank" rel="noopener">Chatstat</a>, Gold Coast, Australia</p>
-        <ul><li>Conducted usability testing sessions with parents and analysed behaviour data to find usability problems in the app.</li></ul>
+        <ul><li>Conducted usability testing with parents and analysed how they used the app, turning the findings into recommended design improvements.</li></ul>
       </article>
     </li>
 
     <li class="stop" data-city="brisbane">
       <div class="stop-label mono">Jan – Mar 2026</div>
       <article class="job" id="j-aemo" data-skills="bi eng">
-        <h3>Stakeholder Engagement Intern</h3>
+        <h3>Business Analyst Intern</h3>
         <p class="job-org"><a href="https://www.linkedin.com/company/australian-energy-market-operator/" target="_blank" rel="noopener">Australian Energy Market Operator</a>, Brisbane, Australia</p>
         <ul>
           <li>Cleaned and de-duplicated 100,000+ stakeholder records across multiple sources in Microsoft Dynamics, guided by a job-persona taxonomy and domain-to-organisation mapping I built.</li>
@@ -273,6 +271,7 @@
       <article class="job" id="j-toastmasters">
         <h3>Founding Charter Member</h3>
         <p class="job-org">Brisbane North Multicultural Toastmasters Club, Brisbane, Australia</p>
+        <ul><li>Helped launch the club, actively engaging and speaking at meetings to grow my public speaking and leadership skills.</li></ul>
       </article>
     </li>
 
@@ -281,7 +280,7 @@
       <article class="job" id="j-mercor" data-skills="">
         <h3>Generalist Expert (freelance)</h3>
         <p class="job-org">Mercor, Remote</p>
-        <ul><li>Review and grade 100+ AI-generated business documents and provide feedback that is used to train the models.</li></ul>
+        <ul><li>Reviewed and graded 100+ AI-generated business documents and provided feedback used to train the models.</li></ul>
       </article>
     </li>
 
@@ -292,7 +291,7 @@
         <p class="job-org"><a href="https://www.linkedin.com/company/gold-coast-hospital-and-health-service/" target="_blank" rel="noopener">Gold Coast Hospital and Health Service</a>, Gold Coast, Australia</p>
         <ul>
           <li>Modelled 800,000+ workforce records for 1,200+ staff to understand role changes.</li>
-          <li>LightGBM models predict a move of role, position, department or facility within 12 months (ROC-AUC 0.76) and exits (0.72), explained with SHAP.</li>
+          <li>Deployed LightGBM models to predict a move of role, position, department or facility within 12 months (ROC-AUC 0.76) and exits (0.72), explained with SHAP.</li>
           <li>Built a scheduled Microsoft Fabric pipeline that refreshes the predictions for workforce planning.</li>
           <li>Automated the fortnightly Emergent Leave compliance review with Power Automate and Office Scripts.</li>
         </ul>
@@ -309,7 +308,7 @@
           <li>Built a geospatial dashboard for viewing plot-level drone imagery and vegetation indices without GIS software.</li>
           <li>Built a browser-based plot designer that exports GIS-ready trial layouts in each project's coordinate system.</li>
           <li>Replaced manual downloads from the Hiphen Cloverfield API with scheduled ingestion into the research data repository.</li>
-          <li>Turned a YOLO11 sorghum head-count model into a no-code web app that lets researchers annotate missed detections.</li>
+          <li>Built a browser-based web app around an existing YOLO11 sorghum head-count model, making it easy for researchers to run counts and fix missed detections.</li>
         </ul>
         <p class="job-tech mono">Python · PyQGIS · geopandas · rasterio · JavaScript · FastAPI · ARDC Nectar</p>
       </article>
@@ -317,10 +316,10 @@
 
     <li class="stop" data-city="brisbane">
       <div class="stop-label mono">December 2026</div>
-      <p class="transfer-note">Graduating from The University of Queensland, and ready for what's next.</p>
+      <p class="transfer-note">Graduating from The University of Queensland, and ready for what's next!</p>
     </li>
   </ol>
-  <p class="aside">Off the clock (well, on a different clock), I've made sandwiches at Subway, kept the queue moving at 7-Eleven with 100+ customers a shift, and chased property leads for PVI Group. Turns out customer service is just stakeholder engagement with more snacks.</p>
+  <p class="aside">Alongside all of this, and off the clock (well, on a different clock), I've made sandwiches at Subway, kept the queue moving at 7-Eleven with 100+ customers a shift, and chased property leads for PVI Group. Turns out customer service is just stakeholder engagement with more snacks.</p>
 </section>
 
 <!-- SKILLS -->
