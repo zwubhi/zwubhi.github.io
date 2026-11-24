@@ -170,13 +170,24 @@
       if (smooth) animateTo(ns, ntx, nty); else { s = ns; tx = ntx; ty = nty; apply(); }
     }
 
+    function geoDist(lo1, la1, lo2, la2) { // great-circle distance in metres
+      const R = 6371008.8, r = Math.PI / 180, dLa = (la2 - la1) * r, dLo = (lo2 - lo1) * r;
+      const h = Math.sin(dLa / 2) ** 2 + Math.cos(la1 * r) * Math.cos(la2 * r) * Math.sin(dLo / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(h));
+    }
     function updateScale() {
-      const mPerPx = (111320 / K) / s;
-      const target = 90 * mPerPx;
-      const nice = [250, 500, 1000, 2000, 5000, 10000, 20000, 50000];
-      let len = nice[0];
-      for (const n of nice) if (n <= target) len = n;
-      const px = len / mPerPx; // true on-screen length of `len` metres at this zoom
+      // metres per screen pixel, measured from the map's own projection at the current zoom,
+      // including any CSS/SVG scaling between map units and real screen pixels
+      const ctm = world.getScreenCTM();
+      if (!ctm || !W) return;
+      const pxPerUnit = Math.hypot(ctm.a, ctm.b);
+      const cx = (W / 2 - tx) / s, cy = (H / 2 - ty) / s, half = 50 / pxPerUnit;
+      const [lo1, la1] = inv(cx - half, cy), [lo2, la2] = inv(cx + half, cy);
+      const mPerPx = geoDist(lo1, la1, lo2, la2) / 100;
+      // round length whose bar is 60-120 px: steps of 1, 2, 4, 5 x 10^n are never more than 2x apart
+      let len = 1000;
+      outer: for (let e = 1; e <= 6; e++) for (const m of [1, 2, 4, 5]) { const L = m * 10 ** e; if (L / mPerPx >= 60) { len = L; break outer; } }
+      const px = len / mPerPx;
       scaleEl.querySelector('.bar').style.width = px.toFixed(1) + 'px';
       scaleEl.querySelector('.ticks').style.width = px.toFixed(1) + 'px';
       const km = len >= 1000, v = km ? len / 1000 : len;
