@@ -373,7 +373,7 @@
   if (canvas && canvas.getContext) {
     const ctx = canvas.getContext('2d');
     const D2R = Math.PI / 180;
-    const short = { 'p-paper': 'Rajasthan', 'p-bus': 'Brisbane', 'p-fake': 'UQ', 'p-fall': 'Chennai', 'p-moon': 'Moon' };
+    const short = { 'p-paper': 'Rajasthan', 'p-bus': 'Brisbane', 'p-fake': 'UQ', 'p-fall': 'Chennai', 'p-chatbot': 'Chennai', 'p-cloud': 'Chennai', 'p-moon': 'Moon' };
     const pins = projects.map(el => ({
       id: el.id, el, lat: +el.dataset.lat, lon: +el.dataset.lon, moon: !!el.dataset.moon,
       place: el.dataset.place, loc: el.querySelector('.p-loc').textContent, name: short[el.id] || el.id
@@ -465,7 +465,7 @@
       // pins
       ctx.save(); ctx.globalAlpha = alpha;
       ctx.font = `500 ${Math.max(10, size * 0.026)}px "JetBrains Mono", monospace`; ctx.textBaseline = 'middle';
-      pins.filter(p => !p.moon).forEach(p => {
+      pins.filter(p => !p.moon).sort((a, b) => (a === active) - (b === active)).forEach(p => { // active pin drawn last so shared spots (Chennai) still show it
         let [x, y, c] = proj(p.lat, p.lon); p.vis = c > 0.05;
         if (!p.vis) return;
         if (p.id === 'p-fake') { // UQ sits almost on top of Brisbane: draw it just below, with a thin line to its true location

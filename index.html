@@ -139,47 +139,63 @@
       </article>
 
       <article class="project" id="p-bus" data-lat="-27.47" data-lon="153.03" data-place="Brisbane, Australia">
-        <p class="p-loc mono">27.5°S 153.0°E · Brisbane</p>
-        <h3>Brisbane bus service equity</h3>
-        <p class="p-meta">Independent GIS project · QGIS · 2025</p>
-        <p>Which suburbs have plenty of residents but little bus service? I joined ABS 2025 population projections to SA1 and SA2 boundaries, rebuilt every route from Translink's GTFS feed, counted 2.88 million scheduled stop departures and aggregated them to suburbs with spatial joins. Totals matched across the stop, SA1 and SA2 layers.</p>
-        <p class="p-result"><span class="num mono">138 of 227</span> scored suburbs came out under-served. The top of the list mixes fast-growing fringe areas (Chambers Flat–Logan Reserve, Yarrabilba) with dense inner suburbs such as Kangaroo Point.</p>
-        <p class="p-limit">Next step: the current score mixes density and frequency on different scales, so I'm replacing it with departures per 1,000 residents ranked within density bands, which is easier to compare.</p>
+        <p class="p-loc mono">27.5°S 153.0°E · Brisbane, Australia</p>
+        <h3>Brisbane bus service equity analysis</h3>
+        <p class="p-meta">Independent QGIS project</p>
+        <p>This project identifies Brisbane suburbs with large populations but limited bus service.</p>
+        <p>I joined ABS 2025 population projections to SA1 and SA2 boundaries, rebuilt every route from Translink's GTFS feed, processed 2.88 million scheduled stop departures and aggregated them to suburbs with spatial joins.</p>
+        <p class="p-result"><span class="num mono">138 of 227</span> The most under-served areas include fast-growing outer suburbs, Chambers Flat–Logan Reserve and Yarrabilba, and dense inner suburbs, Kangaroo Point.</p>
+        <p class="p-limit">Future work: add real-time vehicle data (GTFS-Realtime) to measure the service buses actually deliver, not just what the timetable promises.</p>
         <ul class="tags"><li>QGIS</li><li>GTFS</li><li>ABS SA1/SA2</li><li>Spatial joins</li></ul>
-        <div class="p-links"><a class="p-link" href="#map">Explore it on the map</a><a class="p-link" href="https://github.com/zwubhi/brisbane-bus-service-deficit">Code and data on GitHub</a></div>
+        <div class="p-links"><a class="p-link" href="#map">Explore it on the map</a><a class="p-link" href="https://github.com/zwubhi/brisbane-bus-service-deficit" target="_blank" rel="noopener">View the code and data on GitHub</a></div>
       </article>
 
       <article class="project" id="p-fake" data-lat="-27.50" data-lon="153.01" data-place="The University of Queensland">
         <p class="p-loc mono">27.5°S 153.0°E · UQ St Lucia</p>
-        <h3>Fake news detection that holds up under attack</h3>
-        <p class="p-meta">Master's capstone · The University of Queensland · 2026</p>
-        <p>A detector that reads both a post's title and its image, tested against posts deliberately manipulated to fool it. BERT encodes the title, ViT encodes the image and CLIP scores how well they match. I generated 9,697 adversarial posts with Qwen2.5 and Stable Diffusion, then retrained on clean and adversarial posts with a ViT modified to focus on reliable image regions. Data: Fakeddit, cleaned to posts with valid images.</p>
+        <h3>Adversarial fake news detection</h3>
+        <p class="p-meta">Master's capstone project</p>
+        <p>I built a detector that reads both a post's title and its image. BERT encodes the title, ViT encodes the image and CLIP scores how well they match. I generated 9,697 adversarial posts with Qwen2.5 and Stable Diffusion, then retrained the model on clean and adversarial posts using the Fakeddit dataset.</p>
         <div class="bars" aria-label="F1 score before and after adversarial training">
           <div class="bar-row"><span>Manipulated posts</span><span class="bar-track"><i style="--a:.68;--b:.71"></i></span><span class="mono">0.68 → 0.71</span></div>
           <div class="bar-row"><span>Clean posts</span><span class="bar-track"><i style="--a:.80;--b:.82"></i></span><span class="mono">0.80 → 0.82</span></div>
         </div>
-        <p class="p-limit">The gains were not statistically significant on the small test sets, so a larger evaluation comes next. The clearer finding: detectors tested only on clean posts overstate how accurate they are.</p>
-        <ul class="tags"><li>PyTorch</li><li>Hugging Face</li><li>BERT · ViT · CLIP</li><li>Generative AI</li></ul>
+        <p class="p-limit">Limitation: the model was tested on a single Reddit-based dataset with small test sets, so results may not carry over to other platforms.</p>
+        <ul class="tags"><li>PyTorch</li><li>Hugging Face</li><li>BERT</li><li>ViT</li><li>CLIP</li><li>Generative AI</li></ul>
       </article>
 
       <article class="project" id="p-fall" data-lat="12.84" data-lon="80.15" data-place="Chennai, India">
         <p class="p-loc mono">12.8°N 80.2°E · Chennai, India</p>
-        <h3>FALLERT: fall detection for older people living alone</h3>
-        <p class="p-meta">IoT wearable · Vellore Institute of Technology · Patent filed</p>
-        <p>Single-sensor fall alarms go off when someone sits down quickly. FALLERT is worn at the waist and combines an accelerometer, gyroscope, barometer and heart-rate sensor to tell a real fall from everyday movement and estimate how hard the impact was. A NodeMCU (ESP8266) with a SIM800 module sends Wi-Fi and SMS alerts to carers.</p>
+        <h3>Elderly fall detection system</h3>
+        <p class="p-meta">IoT wearable project</p>
+        <p>FALLERT is worn at the waist and combines an accelerometer, gyroscope, barometer and heart-rate sensor to tell a real fall from everyday movement and estimate how hard the impact was. A NodeMCU (ESP8266) with a SIM800 module sends Wi-Fi and SMS alerts to carers.</p>
         <p class="p-result"><span class="num mono">Patent filed</span> for the working prototype.</p>
-        <ul class="tags"><li>IoT</li><li>Sensor fusion</li><li>ESP8266</li><li>Real-time alerts</li></ul>
+        <p class="p-limit">Impact: carers are alerted automatically by Wi-Fi and SMS, so an older person living alone can get help without having to call for it.</p>
+        <ul class="tags"><li>Accelerometer</li><li>Gyroscope</li><li>Barometer</li><li>Heart-rate sensor</li></ul>
+      </article>
+
+      <article class="project" id="p-chatbot" data-lat="12.84" data-lon="80.15" data-place="Chennai, India">
+        <p class="p-loc mono">12.8°N 80.2°E · Chennai, India</p>
+        <h3>AI chatbot for government services</h3>
+        <p>I developed a GPT-3.5-powered chatbot that makes Indian government services easier to access, using NLP-based query handling.</p>
+        <ul class="tags"><li>Python</li><li>GPT-3.5</li><li>NLP</li></ul>
+      </article>
+
+      <article class="project" id="p-cloud" data-lat="12.84" data-lon="80.15" data-place="Chennai, India">
+        <p class="p-loc mono">12.8°N 80.2°E · Chennai, India</p>
+        <h3>Secure cloud file storage</h3>
+        <p>I built AES-encrypted file storage on AWS that keeps data private end to end and retrieves it securely in a single-cloud environment.</p>
+        <ul class="tags"><li>AWS</li><li>AES encryption</li></ul>
       </article>
 
       <article class="project" id="p-moon" data-moon="1" data-lat="0" data-lon="0" data-place="The Moon">
-        <p class="p-loc mono">Off-planet · The Moon</p>
-        <h3>Finding craters on the Moon</h3>
-        <p class="p-meta">Team project · Vellore Institute of Technology · 2022</p>
-        <p>We labelled 29 lunar surface images by hand, cleaned them with OpenCV sharpening and noise filters, and fine-tuned a pretrained YOLOv5 detector for a single crater class over 150 epochs.</p>
+        <p class="p-loc mono">The Moon</p>
+        <h3>Moon craters detection</h3>
+        <p class="p-meta">Team project</p>
+        <p>We labelled 29 lunar surface images manually, cleaned them with OpenCV sharpening and noise filters, and fine-tuned a pretrained YOLOv5 detector for a single crater class.</p>
         <p class="p-result"><span class="num mono">0.56 mAP</span> on the validation images.</p>
-        <p class="p-limit">With only 29 images this is a proof of concept. The same workflow is what I now use for counting sorghum heads in drone imagery.</p>
+        <p class="p-limit">With only 29 images this is a proof of concept.</p>
         <ul class="tags"><li>YOLOv5</li><li>OpenCV</li><li>Object detection</li></ul>
-        <a class="p-link" href="https://github.com/zwubhi/moon-craters-detection">View on GitHub</a>
+        <a class="p-link" href="https://github.com/zwubhi/moon-craters-detection" target="_blank" rel="noopener">View on GitHub</a>
       </article>
 
     </div>

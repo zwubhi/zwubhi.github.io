@@ -244,6 +244,7 @@ input[type="radio"], input[type="checkbox"] { accent-color: var(--c-under); widt
 .p-loc { color: var(--accent); margin-bottom: 10px; }
 .project h3 { font-size: clamp(23px, 2.4vw, 29px); }
 .p-meta { color: var(--ink-2); font-size: 14.5px; margin: 8px 0 18px; }
+.project h3 + p:not(.p-meta) { margin-top: 18px; } /* cards without a meta line keep the same gap */
 .p-result { border-left: 3px solid var(--c-under); padding: 4px 0 4px 14px; }
 .p-result .num { display: block; font-size: 26px; font-weight: 500; color: var(--ink); letter-spacing: -.02em; margin-bottom: 2px; }
 .p-limit { color: var(--ink-2); font-size: 15px; }
