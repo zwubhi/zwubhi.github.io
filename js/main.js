@@ -47,7 +47,7 @@
   Promise.all([
     getJSON('data/brisbane_deficit.geojson'),
     getJSON('data/bus_routes.geojson').catch(() => null),
-    null // bus stops are not shown
+    getJSON('data/busiest_stops.geojson').catch(() => null)
   ]).then(([sa2, routes, stops]) => initMap(sa2, routes, stops))
     .catch(err => { console.warn('Map data not loaded:', err); });
 
@@ -253,7 +253,7 @@
         subs.forEach(d => { const c = d.props.category || 'No data'; counts[c] = (counts[c] || 0) + 1; d.el.style.fill = `var(${CAT[c] || '--c-none'})`; });
         legendEl.innerHTML = ['Under-served', 'Balanced', 'Well-served', 'No data'].filter(c => counts[c]).map(c =>
           `<div class="legend-row"><i style="background:var(${CAT[c]})"></i>${c}<span class="n">${counts[c]}</span></div>`).join('') +
-          `<p class="legend-note">Deficit = demand (density) minus supply (departures). Balanced = score rounds to 0.</p>`;
+          `<p class="legend-note">Deficit = density-based demand minus departures-based supply, from my QGIS analysis. "Balanced" means a score that rounds to zero.</p>`;
       } else {
         const br = quantiles(layer);
         const cls = v => v == null ? -1 : br.findIndex(b => v <= b) === -1 ? 4 : br.findIndex(b => v <= b);
@@ -265,10 +265,12 @@
           const a = Math.round(lo[i]), b = i < 4 ? Math.round(br[i]) : null;
           return `<div class="legend-row"><i style="background:var(--r${i + 1})"></i>${b == null ? fmt(a) + '+' : fmt(a) + ' – ' + fmt(b)}<span class="n">${n}</span></div>`;
         }).join('') + (nd ? `<div class="legend-row"><i style="background:var(--c-none)"></i>No data<span class="n">${nd}</span></div>` : '') +
-          `<p class="legend-note">${unit}${layer === 'departures_per_1000' ? ', full GTFS timetable' : ''}. 5 equal-count classes.</p>`;
+          `<p class="legend-note">${unit}, in five equal-count classes.${layer === 'departures_per_1000' ? ' Departures are counted across the whole GTFS timetable.' : ''}</p>`;
       }
     }
     panel.querySelectorAll('input[name="layer"]').forEach(r => r.addEventListener('change', () => { layer = r.value; shade(); }));
+    document.getElementById('t-routes').addEventListener('change', e => { gRoutes.style.display = e.target.checked ? '' : 'none'; });
+    document.getElementById('t-stops').addEventListener('change', e => { gStops.style.display = e.target.checked ? '' : 'none'; });
     shade();
 
     /* --- tooltip / selection --- */
@@ -319,14 +321,11 @@
     }
     svg.addEventListener('click', e => {
       if (moved) { moved = false; return; }
-      const hit = document.elementFromPoint(e.clientX, e.clientY); // the map captures the pointer, so find the suburb under the cursor
-      const d = hit && hit.__sub;
+      const d = e.target.__sub;
       if (!d || d === selected) { clearSel(); if (hovered && e.pointerType === 'mouse') hoverAt(e); return; }
-      flyTo(d);
+      const p = pt(e); select(d, p[0], p[1]);
     });
     svg.addEventListener('mouseleave', () => { if (hovered) hovered.el.classList.remove('hl'); hovered = null; });
-    fig.addEventListener('mouseleave', () => { if (hovered) hovered.el.classList.remove('hl'); hovered = null; hideTip(); });
-    fig.addEventListener('mouseenter', () => { if (selected && tip.hidden) select(selected); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') clearSel(); });
 
     /* --- search --- */
@@ -336,10 +335,6 @@
     function goTo(name) {
       const d = subs.find(x => x.props.name.toLowerCase() === name.trim().toLowerCase());
       if (!d) return false;
-      flyTo(d);
-      return true;
-    }
-    function flyTo(d) {
       const f = fit(d.box, .5);
       const ns = Math.min(f.s, base * 5);
       const [x0, y0, x1, y1] = d.box;
@@ -347,13 +342,8 @@
       const ntx = aw / 2 - ns * (x0 + x1) / 2, nty = (H - (isNarrow() ? 0 : 70)) / 2 - ns * (y0 + y1) / 2;
       animateTo(ns, ntx, nty);
       setTimeout(() => select(d), reduceMotion ? 0 : 680);
+      return true;
     }
-    const isName = v => subs.some(x => x.props.name.toLowerCase() === v.trim().toLowerCase());
-    function clearForNew() {
-      if (search.value && isName(search.value)) { search.placeholder = search.value; search.value = ''; }
-    }
-    search.addEventListener('pointerdown', clearForNew);
-    search.addEventListener('focus', clearForNew);
     search.addEventListener('change', () => goTo(search.value));
     search.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); goTo(search.value); } });
   }
@@ -461,18 +451,13 @@
       ctx.save(); ctx.globalAlpha = alpha;
       ctx.font = `500 ${Math.max(10, size * 0.026)}px "JetBrains Mono", monospace`; ctx.textBaseline = 'middle';
       pins.filter(p => !p.moon).forEach(p => {
-        let [x, y, c] = proj(p.lat, p.lon); p.vis = c > 0.05;
+        const [x, y, c] = proj(p.lat, p.lon); p.sx = x; p.sy = y; p.vis = c > 0.05;
         if (!p.vis) return;
-        if (p.id === 'p-fake') { // UQ sits almost on top of Brisbane: draw it just below, with a short leader line
-          ctx.strokeStyle = colors.ink2; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y + 20); ctx.stroke();
-          y += 20;
-        }
-        p.sx = x; p.sy = y;
         const on = active === p;
         if (on && !reduceMotion) { const pr = (t / 1400) % 1; ctx.strokeStyle = colors.accent; ctx.globalAlpha = alpha * (1 - pr); ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 6 + pr * 18, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = alpha; }
         ctx.fillStyle = on ? colors.accent : colors.paper; ctx.strokeStyle = colors.ink; ctx.lineWidth = 2;
         ctx.beginPath(); ctx.arc(x, y, on ? 7 : 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        {
+        if (on || p.id !== 'p-fake') {
           const label = p.name; const w = ctx.measureText(label).width;
           const lx = x + 12, ly = y - (p.id === 'p-bus' ? 12 : 0);
           ctx.fillStyle = colors.paper; ctx.globalAlpha = alpha * .85; ctx.fillRect(lx - 4, ly - 9, w + 8, 18);
@@ -542,14 +527,14 @@
       if (active === p) return;
       active = p;
       projects.forEach(el => el.classList.toggle('active', el === p.el));
-      pinBox.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.body === 'moon') === p.moon)));
-      gLabel.innerHTML = p.moon ? '' : `<b>${esc(p.place)}</b> · ${esc(p.loc.split('·')[0].trim())}`;
+      pinBox.querySelectorAll('button').forEach(b => b.setAttribute('aria-current', String(b.dataset.id === p.id)));
+      gLabel.innerHTML = `<b>${esc(p.place)}</b> · ${esc(p.loc.split('·')[0].trim())}`;
       if (!p.moon) target = { lon: p.lon, lat: Math.max(-35, Math.min(35, p.lat)) };
     }
-    pinBox.innerHTML = '<button type="button" data-body="earth" aria-pressed="true">Earth</button><button type="button" data-body="moon" aria-pressed="false">Moon</button>';
+    pinBox.innerHTML = pins.map(p => `<button type="button" data-id="${p.id}">${esc(p.name)}</button>`).join('');
     pinBox.addEventListener('click', e => {
       const b = e.target.closest('button'); if (!b) return;
-      const p = b.dataset.body === 'moon' ? pins.find(x => x.moon) : pins.find(x => !x.moon);
+      const p = pins.find(x => x.id === b.dataset.id);
       setActive(p);
       p.el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
     });
@@ -575,7 +560,7 @@
       const wasClick = !dragging.moved; dragging = null; canvas.classList.remove('dragging');
       if (wasClick) {
         const [x, y] = cpt(e);
-        const hit = pins.filter(p => !p.moon && p.vis && Math.hypot(p.sx - x, p.sy - y) < 16).sort((a, b) => Math.hypot(a.sx - x, a.sy - y) - Math.hypot(b.sx - x, b.sy - y))[0];
+        const hit = pins.find(p => !p.moon && p.vis && Math.hypot(p.sx - x, p.sy - y) < 16);
         if (hit) { setActive(hit); hit.el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' }); }
       }
     };
